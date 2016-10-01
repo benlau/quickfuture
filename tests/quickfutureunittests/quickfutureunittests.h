@@ -9,5 +9,7 @@ public:
 
 private slots:
     void typeChecking();
+
+    void test_QFVariantWrapper();
 };
 
