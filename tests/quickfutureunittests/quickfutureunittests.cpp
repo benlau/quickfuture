@@ -5,6 +5,7 @@
 #include "fileactor.h"
 #include "quickfutureunittests.h"
 #include "qfvariantwrapper.h"
+#include "qffuture.h"
 
 Q_DECLARE_METATYPE(QFuture<QString>)
 
@@ -32,5 +33,15 @@ void QuickFutureUnitTests::test_QFVariantWrapper()
     QVERIFY(wrapper.isFinished(v));
 
 
+}
+
+void QuickFutureUnitTests::test_QFFuture()
+{
+    QFFuture wrapper;
+    QFuture<QString> future;
+    QVariant v = QVariant::fromValue<QFuture<QString> >(future);
+
+    QVERIFY(future.isFinished());
+    QVERIFY(wrapper.isFinished(v));
 }
 

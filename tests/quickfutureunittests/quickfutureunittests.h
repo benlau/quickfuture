@@ -11,5 +11,7 @@ private slots:
     void typeChecking();
 
     void test_QFVariantWrapper();
+
+    void test_QFFuture();
 };
 

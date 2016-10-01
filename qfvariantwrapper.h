@@ -6,7 +6,7 @@
 
 class QFVariantWrapperBase {
 public:
-
+    virtual bool isFinished(const QVariant& v) = 0;
 };
 
 template <typename T>
