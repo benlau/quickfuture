@@ -1,4 +1,5 @@
 #include <QGuiApplication>
+#include <QtQml>
 #include "qffuture.h"
 
 static QMap<int, QFVariantWrapperBase*> m_wrappers;
@@ -35,6 +36,26 @@ bool QFFuture::isFinished(const QVariant &future)
     return wrapper->isFinished(future);
 }
 
+void QFFuture::onFinished(const QVariant &future, QJSValue func)
+{
+    if (!m_wrappers.contains(typeId(future))) {
+        qWarning() << QString("QFFuture: Can not handle input data type: %1").arg(QMetaType::typeName(future.type()));
+        return;
+    }
+    QFVariantWrapperBase* wrapper = m_wrappers[typeId(future)];
+    wrapper->onFinished(future, func);
+}
+
+
+static QObject *provider(QQmlEngine *engine, QJSEngine *scriptEngine) {
+    Q_UNUSED(engine);
+    Q_UNUSED(scriptEngine);
+
+    QFFuture* object = new QFFuture();
+
+    return object;
+}
+
 static void init() {
     QCoreApplication* app = QCoreApplication::instance();
     QObject* tmp = new QObject(app);
@@ -46,6 +67,8 @@ static void init() {
             iter++;
         }
     });
+
+    qmlRegisterSingletonType<QFFuture>("Future", 1, 0, "Future", provider);
 }
 
 Q_COREAPP_STARTUP_FUNCTION(init)

@@ -13,5 +13,7 @@ private slots:
     void test_QFVariantWrapper();
 
     void test_QFFuture();
+
+    void qmlTests();
 };
 

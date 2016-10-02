@@ -20,6 +20,8 @@ signals:
 public slots:
     bool isFinished(const QVariant& future);
 
+    void onFinished(const QVariant& future, QJSValue func);
+
 private:
     static void registerType(int typeId, QFVariantWrapperBase* wrapper);
 

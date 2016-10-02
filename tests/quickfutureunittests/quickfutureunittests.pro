@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += testlib qml concurrent
+CONFIG += c++11
 
 TARGET = quickfutureunittests
 CONFIG   += console
@@ -23,7 +24,8 @@ include(vendor/vendor.pri)
 include($$ROOT_DIR/quickfuture.pri)
 
 DISTFILES +=     qpm.json     qmltests/tst_QmlTests.qml \
-    qmltests/test_typeChecking.qml
+    qmltests/test_typeChecking.qml \
+    qmltests/test_Callback.qml
 
 HEADERS +=     \
     fileactor.h \

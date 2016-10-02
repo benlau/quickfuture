@@ -2,6 +2,7 @@
 #include <QTest>
 #include <Automator>
 #include <QQmlContext>
+#include <QtShell>
 #include "fileactor.h"
 #include "quickfutureunittests.h"
 #include "qfvariantwrapper.h"
@@ -43,5 +44,23 @@ void QuickFutureUnitTests::test_QFFuture()
 
     QVERIFY(future.isFinished());
     QVERIFY(wrapper.isFinished(v));
+}
+
+void QuickFutureUnitTests::qmlTests()
+{
+    QQmlApplicationEngine engine;
+    engine.addImportPath("qrc:///");
+    engine.rootContext()->setContextProperty("FileActor", new FileActor());
+
+    Automator automator(&engine);
+
+    QStringList files = QtShell::find(QString(SRCDIR) + "qmltests", "test_*.qml");
+    QVERIFY(files.size() > 0);
+
+    foreach (QString file, files) {
+        engine.load(file);
+    }
+
+    QVERIFY(automator.runTestCase());
 }
 
