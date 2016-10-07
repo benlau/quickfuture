@@ -4,11 +4,11 @@
 #include <QObject>
 #include <QFuture>
 
-class FileActor : public QObject
+class Actor : public QObject
 {
     Q_OBJECT
 public:
-    explicit FileActor(QObject *parent = 0);
+    explicit Actor(QObject *parent = 0);
 
 signals:
 

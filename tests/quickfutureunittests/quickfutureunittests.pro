@@ -15,19 +15,18 @@ TEMPLATE = app
 ROOT_DIR = $$PWD/../..
 
 SOURCES +=     main.cpp     \
-    fileactor.cpp \
-    quickfutureunittests.cpp
+    quickfutureunittests.cpp \
+    actor.cpp
 
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 include(vendor/vendor.pri)
 include($$ROOT_DIR/quickfuture.pri)
 
-DISTFILES +=     qpm.json     qmltests/tst_QmlTests.qml \
-    qmltests/test_typeChecking.qml \
+DISTFILES +=     qpm.json     \
     qmltests/test_Callback.qml
 
 HEADERS +=     \
-    fileactor.h \
-    quickfutureunittests.h
+    quickfutureunittests.h \
+    actor.h
 

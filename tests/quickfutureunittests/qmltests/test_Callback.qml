@@ -10,7 +10,7 @@ TestableCase {
         var called = false;
         var result;
 
-        Future.onFinished(FileActor.read("a-file-not-existed"), function(value) {
+        Future.onFinished(Actor.read("a-file-not-existed"), function(value) {
             called = true;
             result = value;
         });
@@ -23,7 +23,7 @@ TestableCase {
         var called = false;
         var result;
 
-        Future.onFinished(FileActor.dummy(), function(value) {
+        Future.onFinished(Actor.dummy(), function(value) {
             called = true;
             result = value;
         });
@@ -35,7 +35,7 @@ TestableCase {
     function test_alreadyFinished() {
         var called = false;
 
-        Future.onFinished(FileActor.dummy(), function(value) {
+        Future.onFinished(Actor.dummy(), function(value) {
             called = true;
         });
         compare(called, false);

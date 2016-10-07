@@ -3,7 +3,7 @@
 #include <Automator>
 #include <QQmlContext>
 #include <QtShell>
-#include "fileactor.h"
+#include "actor.h"
 #include "quickfutureunittests.h"
 #include "qfvariantwrapper.h"
 #include "qffuture.h"
@@ -12,14 +12,6 @@ Q_DECLARE_METATYPE(QFuture<QString>)
 
 QuickFutureUnitTests::QuickFutureUnitTests(QObject *parent) : QObject(parent)
 {
-
-}
-
-void QuickFutureUnitTests::typeChecking()
-{
-    QQmlApplicationEngine engine;
-    engine.rootContext()->setContextProperty("FileActor", new FileActor());
-    engine.load(QString(SRCDIR) + "qmltests/test_typeChecking.qml");
 
 }
 
@@ -50,7 +42,7 @@ void QuickFutureUnitTests::qmlTests()
 {
     QQmlApplicationEngine engine;
     engine.addImportPath("qrc:///");
-    engine.rootContext()->setContextProperty("FileActor", new FileActor());
+    engine.rootContext()->setContextProperty("Actor", new Actor());
 
     Automator automator(&engine);
 

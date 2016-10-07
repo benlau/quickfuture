@@ -1,12 +1,12 @@
 #include <QtConcurrent>
-#include "fileactor.h"
+#include "actor.h"
 
-FileActor::FileActor(QObject *parent) : QObject(parent)
+Actor::Actor(QObject *parent) : QObject(parent)
 {
 
 }
 
-QFuture<QString> FileActor::read(const QString &fileName)
+QFuture<QString> Actor::read(const QString &fileName)
 {
     return QtConcurrent::run([fileName]() -> QString {
 
@@ -19,14 +19,14 @@ QFuture<QString> FileActor::read(const QString &fileName)
     });
 }
 
-QFuture<void> FileActor::dummy()
+QFuture<void> Actor::dummy()
 {
     return QtConcurrent::run([]() -> void {
         return;
-                             });
+    });
 }
 
-QFuture<void> FileActor::alreadyFinished()
+QFuture<void> Actor::alreadyFinished()
 {
     return QFuture<void>();
 }
