@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QFuture>
+#include <QJSEngine>
 #include "qfvariantwrapper.h"
 
 class QFFuture : public QObject
@@ -15,6 +16,11 @@ public:
     static void registerType() {
         registerType(qRegisterMetaType<QFuture<T> >(), new QFVariantWrapper<T>() );
     }
+
+    QJSEngine *engine() const;
+
+    void setEngine(QJSEngine *engine);
+
 signals:
 
 public slots:
@@ -25,6 +31,7 @@ public slots:
 private:
     static void registerType(int typeId, QFVariantWrapperBase* wrapper);
 
+    QPointer<QJSEngine> m_engine;
 };
 
 #endif // QFFUTURE_H

@@ -5,11 +5,17 @@
 #include <QFuture>
 #include <QJSValue>
 #include <QFutureWatcher>
+#include <QPointer>
+#include <QJSEngine>
 
 class QFVariantWrapperBase {
 public:
+    virtual inline ~QFVariantWrapperBase() {
+    }
+
     virtual bool isFinished(const QVariant& v) = 0;
-    virtual void onFinished(const QVariant& v, QJSValue& func) = 0;
+    virtual void onFinished(QPointer<QJSEngine> engine, const QVariant& v, const QJSValue& func) = 0;
+
 };
 
 template <typename T>
@@ -21,7 +27,7 @@ public:
         return future.isFinished();
     }
 
-    virtual void onFinished(const QVariant& v, QJSValue& func) {
+    virtual void onFinished(QPointer<QJSEngine> engine, const QVariant& v, const QJSValue& func) {
         if (!func.isCallable()) {
             qWarning() << "Future.onFinished: Callback is not callable";
             return;
@@ -31,10 +37,21 @@ public:
         QFutureWatcher<T> *watcher = 0;
 
         auto listener = [=]() {
-            //@FIXME - call with arguments
-            //@FIXME - If exception is raised. Report the exception
-            QJSValue callback = func;
-            callback.call();
+
+            if (!engine.isNull()) {
+                QJSValue value = engine->toScriptValue<T>(future.result());
+                QJSValue callback = func;
+                QJSValue ret = callback.call(QJSValueList() << value);
+
+                if (ret.isError()) {
+                    QString message = QString("%1:%2: %3: %4")
+                                      .arg(ret.property("fileName").toString())
+                                      .arg(ret.property("lineNumber").toString())
+                                      .arg(ret.property("name").toString())
+                                      .arg(ret.property("message").toString());
+                    qWarning() << message;
+                }
+            }
             if (watcher != 0) {
                 delete watcher;
             }

@@ -8,12 +8,15 @@ TestableCase {
 
     function test_onFinished() {
         var called = false;
+        var result;
 
         Future.onFinished(FileActor.read("a-file-not-existed"), function(value) {
             called = true;
+            result = value;
         });
         wait(1000);
         compare(called, true);
+        compare(result, "");
     }
 
 }

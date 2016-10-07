@@ -18,11 +18,20 @@ void QFFuture::registerType(int typeId, QFVariantWrapperBase* wrapper)
 {
     if (m_wrappers.contains(typeId)) {
         qWarning() << QString("QFFuture::registerType:It is already registered:%1").arg(QMetaType::typeName(typeId));
-        delete wrapper;
         return;
     }
 
     m_wrappers[typeId] = wrapper;
+}
+
+QJSEngine *QFFuture::engine() const
+{
+    return m_engine;
+}
+
+void QFFuture::setEngine(QJSEngine *engine)
+{
+    m_engine = engine;
 }
 
 bool QFFuture::isFinished(const QVariant &future)
@@ -43,15 +52,14 @@ void QFFuture::onFinished(const QVariant &future, QJSValue func)
         return;
     }
     QFVariantWrapperBase* wrapper = m_wrappers[typeId(future)];
-    wrapper->onFinished(future, func);
+    wrapper->onFinished(m_engine, future, func);
 }
 
-
 static QObject *provider(QQmlEngine *engine, QJSEngine *scriptEngine) {
-    Q_UNUSED(engine);
     Q_UNUSED(scriptEngine);
 
     QFFuture* object = new QFFuture();
+    object->setEngine(engine);
 
     return object;
 }
