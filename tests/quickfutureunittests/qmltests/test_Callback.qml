@@ -23,7 +23,11 @@ TestableCase {
         var called = false;
         var result;
 
-        Future.onFinished(Actor.dummy(), function(value) {
+        var future = Actor.dummy();
+
+        compare(Future.isFinished(future), false);
+
+        Future.onFinished(future, function(value) {
             called = true;
             result = value;
         });
@@ -35,7 +39,9 @@ TestableCase {
     function test_alreadyFinished() {
         var called = false;
 
-        Future.onFinished(Actor.dummy(), function(value) {
+        var future = Actor.alreadyFinished();
+        compare(Future.isFinished(future), true);
+        Future.onFinished(future, function(value) {
             called = true;
         });
         compare(called, false);
