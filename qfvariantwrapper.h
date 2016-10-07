@@ -8,6 +8,23 @@
 #include <QPointer>
 #include <QJSEngine>
 
+namespace QuickFuture {
+
+    template <typename T>
+    inline QJSValueList valueList(const QPointer<QJSEngine>& engine, const QFuture<T>& future) {
+        QJSValue value = engine->toScriptValue<T>(future.result());
+        return QJSValueList() << value;
+    }
+
+    template <>
+    inline QJSValueList valueList<void>(const QPointer<QJSEngine>& engine, const QFuture<void>& future) {
+        Q_UNUSED(engine);
+        Q_UNUSED(future);
+        return QJSValueList();
+    }
+
+}
+
 class QFVariantWrapperBase {
 public:
     virtual inline ~QFVariantWrapperBase() {
@@ -15,8 +32,8 @@ public:
 
     virtual bool isFinished(const QVariant& v) = 0;
     virtual void onFinished(QPointer<QJSEngine> engine, const QVariant& v, const QJSValue& func) = 0;
-
 };
+
 
 template <typename T>
 class QFVariantWrapper : public QFVariantWrapperBase {
@@ -39,9 +56,8 @@ public:
         auto listener = [=]() {
 
             if (!engine.isNull()) {
-                QJSValue value = engine->toScriptValue<T>(future.result());
                 QJSValue callback = func;
-                QJSValue ret = callback.call(QJSValueList() << value);
+                QJSValue ret = callback.call(QuickFuture::valueList<T>(engine, future));
 
                 if (ret.isError()) {
                     QString message = QString("%1:%2: %3: %4")
@@ -66,7 +82,7 @@ public:
             QObject::connect(watcher, &QFutureWatcherBase::finished, listener);
         }
     }
-
 };
+
 
 #endif // QFVARIANTWRAPPER_H

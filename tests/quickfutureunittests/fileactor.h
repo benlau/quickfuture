@@ -16,6 +16,8 @@ public slots:
 
     QFuture<QString> read(const QString& fileName);
 
+    QFuture<void> dummy();
+
 };
 
 #endif // FILEACTOR_H

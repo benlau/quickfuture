@@ -5,6 +5,8 @@
 static QMap<int, QFVariantWrapperBase*> m_wrappers;
 
 Q_DECLARE_METATYPE(QFuture<QString>)
+Q_DECLARE_METATYPE(QFuture<int>)
+Q_DECLARE_METATYPE(QFuture<void>)
 
 static int typeId(const QVariant& v) {
     return v.userType();
@@ -77,6 +79,10 @@ static void init() {
     });
 
     qmlRegisterSingletonType<QFFuture>("Future", 1, 0, "Future", provider);
+
+    QFFuture::registerType<QString>();
+    QFFuture::registerType<int>();
+    QFFuture::registerType<void>();
 }
 
 Q_COREAPP_STARTUP_FUNCTION(init)

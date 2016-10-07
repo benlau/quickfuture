@@ -2,7 +2,6 @@ INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
 SOURCES += \
-    $$PWD/quickfutureqmltypes.cpp \
     $$PWD/qffuture.cpp
 
 HEADERS += \

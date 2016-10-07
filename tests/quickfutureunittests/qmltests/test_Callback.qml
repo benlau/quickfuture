@@ -19,4 +19,18 @@ TestableCase {
         compare(result, "");
     }
 
+    function test_onFinished_void() {
+        var called = false;
+        var result;
+
+        Future.onFinished(FileActor.dummy(), function(value) {
+            called = true;
+            result = value;
+        });
+        wait(1000);
+        compare(called, true);
+        compare(result, undefined);
+    }
+
+
 }

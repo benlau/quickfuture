@@ -18,3 +18,10 @@ QFuture<QString> FileActor::read(const QString &fileName)
         return file.readAll();
     });
 }
+
+QFuture<void> FileActor::dummy()
+{
+    return QtConcurrent::run([]() -> void {
+        return;
+    });
+}
