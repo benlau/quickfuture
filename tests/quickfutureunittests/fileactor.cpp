@@ -23,5 +23,10 @@ QFuture<void> FileActor::dummy()
 {
     return QtConcurrent::run([]() -> void {
         return;
-    });
+                             });
+}
+
+QFuture<void> FileActor::alreadyFinished()
+{
+    return QFuture<void>();
 }

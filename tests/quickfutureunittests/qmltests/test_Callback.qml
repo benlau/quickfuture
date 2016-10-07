@@ -32,5 +32,16 @@ TestableCase {
         compare(result, undefined);
     }
 
+    function test_alreadyFinished() {
+        var called = false;
+
+        Future.onFinished(FileActor.dummy(), function(value) {
+            called = true;
+        });
+        compare(called, false);
+        wait(10);
+        compare(called, true);
+    }
+
 
 }

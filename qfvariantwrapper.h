@@ -7,6 +7,7 @@
 #include <QFutureWatcher>
 #include <QPointer>
 #include <QJSEngine>
+#include <QCoreApplication>
 
 namespace QuickFuture {
 
@@ -23,6 +24,11 @@ namespace QuickFuture {
         return QJSValueList();
     }
 
+    template <typename F>
+    inline void nextTick(F func) {
+        QObject tmp;
+        QObject::connect(&tmp, &QObject::destroyed, QCoreApplication::instance(), func, Qt::QueuedConnection);
+    }
 }
 
 class QFVariantWrapperBase {
@@ -74,8 +80,7 @@ public:
         };
 
         if (future.isFinished()) {
-            //@FIXME - call listener by queued connection
-            listener();
+            QuickFuture::nextTick(listener);
         } else {
             watcher = new QFutureWatcher<T>();
             watcher->setFuture(future);

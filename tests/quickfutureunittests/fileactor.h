@@ -18,6 +18,7 @@ public slots:
 
     QFuture<void> dummy();
 
+    QFuture<void> alreadyFinished();
 };
 
 #endif // FILEACTOR_H
