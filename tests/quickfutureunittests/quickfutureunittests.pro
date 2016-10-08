@@ -24,7 +24,8 @@ include(vendor/vendor.pri)
 include($$ROOT_DIR/quickfuture.pri)
 
 DISTFILES +=     qpm.json     \
-    qmltests/test_Callback.qml
+    qmltests/test_Callback.qml \
+    ../../README.md
 
 HEADERS +=     \
     quickfutureunittests.h \

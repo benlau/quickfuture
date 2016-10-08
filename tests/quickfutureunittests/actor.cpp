@@ -1,4 +1,5 @@
 #include <QtConcurrent>
+#include <Automator>
 #include "actor.h"
 
 Actor::Actor(QObject *parent) : QObject(parent)
@@ -22,6 +23,7 @@ QFuture<QString> Actor::read(const QString &fileName)
 QFuture<void> Actor::dummy()
 {
     return QtConcurrent::run([]() -> void {
+        Automator::wait(100);
         return;
     });
 }

@@ -7,6 +7,12 @@ static QMap<int, QFVariantWrapperBase*> m_wrappers;
 Q_DECLARE_METATYPE(QFuture<QString>)
 Q_DECLARE_METATYPE(QFuture<int>)
 Q_DECLARE_METATYPE(QFuture<void>)
+Q_DECLARE_METATYPE(QFuture<bool>)
+Q_DECLARE_METATYPE(QFuture<qreal>)
+Q_DECLARE_METATYPE(QFuture<QByteArray>)
+Q_DECLARE_METATYPE(QFuture<QVariant>)
+Q_DECLARE_METATYPE(QFuture<QVariantMap>)
+
 
 static int typeId(const QVariant& v) {
     return v.userType();
@@ -83,6 +89,12 @@ static void init() {
     QFFuture::registerType<QString>();
     QFFuture::registerType<int>();
     QFFuture::registerType<void>();
+    QFFuture::registerType<bool>();
+    QFFuture::registerType<qreal>();
+    QFFuture::registerType<QByteArray>();
+    QFFuture::registerType<QVariant>();
+    QFFuture::registerType<QVariantMap>();
+
 }
 
 Q_COREAPP_STARTUP_FUNCTION(init)
