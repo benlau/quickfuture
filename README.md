@@ -1,9 +1,9 @@
 Quick Future
 ============
 
-Quick Future is a wrapper of QFuture for QML.
+Quick Future is a QML wrapper of QFuture.
 
-This project is still under construction.
+This project is still under development. 
 
 **Example**
 
@@ -34,7 +34,7 @@ Custom Type Registration
 
 By default, QFuture<T> is not a standard type recognized by QVariant.
 Therefore, it can not be used in QML environment.
-You have to register QFuture<T> as a QMetaType per template type.
+You have to register QFuture<T> as a QMetaType per template type in order to get rid the error message.
 
 The same rule applies in Quick Future too.
 Common types like bool, int, qreal, QString, QByteArray, QVariantMap are pre-registered already.
