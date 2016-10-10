@@ -3,10 +3,9 @@
 #include <Automator>
 #include <QQmlContext>
 #include <QtShell>
+#include <QFFuture>
 #include "actor.h"
 #include "quickfutureunittests.h"
-#include "qfvariantwrapper.h"
-#include "qffuture.h"
 
 Q_DECLARE_METATYPE(QFuture<QString>)
 

@@ -6,4 +6,5 @@ SOURCES += \
 
 HEADERS += \
     $$PWD/qfvariantwrapper.h \
-    $$PWD/qffuture.h
+    $$PWD/qffuture.h \
+    $$PWD/QFFuture
