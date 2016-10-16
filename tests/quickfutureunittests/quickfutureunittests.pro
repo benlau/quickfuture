@@ -25,7 +25,9 @@ include($$ROOT_DIR/quickfuture.pri)
 
 DISTFILES +=     qpm.json     \
     qmltests/test_Callback.qml \
-    ../../README.md
+    ../../README.md \
+    qmltests/test_Promise.qml \
+    qmltests/PromiseIsNotInstalled.qml
 
 HEADERS +=     \
     quickfutureunittests.h \

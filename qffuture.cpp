@@ -1,5 +1,6 @@
 #include <QGuiApplication>
 #include <QtQml>
+#include <QQmlComponent>
 #include "qffuture.h"
 
 static QMap<int, QFVariantWrapperBase*> m_wrappers;
@@ -37,9 +38,34 @@ QJSEngine *QFFuture::engine() const
     return m_engine;
 }
 
-void QFFuture::setEngine(QJSEngine *engine)
+void QFFuture::setEngine(QQmlEngine *engine)
 {
     m_engine = engine;
+    if (m_engine.isNull()) {
+        return;
+    }
+
+    QString qml = "import QtQuick 2.0\n"
+                  "import QuickPromise 1.0\n"
+                  "import Future 1.0\n"
+                  "QtObject { \n"
+                  "function create(future) {\n"
+                  "    var promise = Q.promise();\n"
+                  "    Future.onFinished(future, function(value) {\n"
+                  "        promise.resolve(value);\n"
+                  "    });\n"
+                  "    return promise;\n"
+                  "}\n"
+                  "}\n";
+
+    QQmlComponent comp (engine);
+    comp.setData(qml.toUtf8(), QUrl());
+    QObject* holder = comp.create();
+    if (holder == 0) {
+        return;
+    }
+
+    promiseCreator = engine->newQObject(holder);
 }
 
 bool QFFuture::isFinished(const QVariant &future)
@@ -61,6 +87,21 @@ void QFFuture::onFinished(const QVariant &future, QJSValue func)
     }
     QFVariantWrapperBase* wrapper = m_wrappers[typeId(future)];
     wrapper->onFinished(m_engine, future, func);
+}
+
+QJSValue QFFuture::promise(QJSValue future)
+{
+    QJSValue create = promiseCreator.property("create");
+    QJSValueList args;
+    args << future;
+
+    QJSValue result = create.call(args);
+    if (result.isError()) {
+        qWarning() << "Future.promise: QuickPromise is not installed or setup properly";
+        result = QJSValue();
+    }
+
+    return result;
 }
 
 static QObject *provider(QQmlEngine *engine, QJSEngine *scriptEngine) {

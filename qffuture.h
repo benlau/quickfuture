@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QFuture>
-#include <QJSEngine>
+#include <QQmlEngine>
 #include "qfvariantwrapper.h"
 
 class QFFuture : public QObject
@@ -19,7 +19,7 @@ public:
 
     QJSEngine *engine() const;
 
-    void setEngine(QJSEngine *engine);
+    void setEngine(QQmlEngine *engine);
 
 signals:
 
@@ -28,10 +28,13 @@ public slots:
 
     void onFinished(const QVariant& future, QJSValue func);
 
+    QJSValue promise(QJSValue future);
+
 private:
     static void registerType(int typeId, QFVariantWrapperBase* wrapper);
 
-    QPointer<QJSEngine> m_engine;
+    QPointer<QQmlEngine> m_engine;
+    QJSValue promiseCreator;
 };
 
 #endif // QFFUTURE_H

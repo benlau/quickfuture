@@ -37,6 +37,23 @@ void QuickFutureUnitTests::test_QFFuture()
     QVERIFY(wrapper.isFinished(v));
 }
 
+void QuickFutureUnitTests::PromiseIsNotInstalled()
+{
+    QQmlApplicationEngine engine;
+
+    qDebug() << "Excepted error:";
+
+    engine.rootContext()->setContextProperty("Actor", new Actor());
+
+    engine.load(QString(SRCDIR) + "/qmltests/PromiseIsNotInstalled.qml");
+
+    QObject* object = engine.rootObjects().first();
+    QVERIFY(object);
+
+    QMetaObject::invokeMethod(object, "test",Qt::DirectConnection);
+
+}
+
 void QuickFutureUnitTests::qmlTests()
 {
     QQmlApplicationEngine engine;

@@ -12,13 +12,13 @@
 namespace QuickFuture {
 
     template <typename T>
-    inline QJSValueList valueList(const QPointer<QJSEngine>& engine, const QFuture<T>& future) {
+    inline QJSValueList valueList(const QPointer<QQmlEngine>& engine, const QFuture<T>& future) {
         QJSValue value = engine->toScriptValue<T>(future.result());
         return QJSValueList() << value;
     }
 
     template <>
-    inline QJSValueList valueList<void>(const QPointer<QJSEngine>& engine, const QFuture<void>& future) {
+    inline QJSValueList valueList<void>(const QPointer<QQmlEngine>& engine, const QFuture<void>& future) {
         Q_UNUSED(engine);
         Q_UNUSED(future);
         return QJSValueList();
@@ -37,7 +37,7 @@ public:
     }
 
     virtual bool isFinished(const QVariant& v) = 0;
-    virtual void onFinished(QPointer<QJSEngine> engine, const QVariant& v, const QJSValue& func) = 0;
+    virtual void onFinished(QPointer<QQmlEngine> engine, const QVariant& v, const QJSValue& func) = 0;
 };
 
 #define QF_WRAPPER_DECL_READ(type, method) \
@@ -53,7 +53,7 @@ public:
     }
 
 #define QF_WRAPPER_CONNECT(method, checker) \
-        virtual void method(QPointer<QJSEngine> engine, const QVariant& v, const QJSValue& func) { \
+        virtual void method(QPointer<QQmlEngine> engine, const QVariant& v, const QJSValue& func) { \
         if (!func.isCallable()) { \
             qWarning() << "Future." #method ": Callback is not callable"; \
             return; \
