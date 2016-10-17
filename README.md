@@ -54,11 +54,11 @@ int main(int argc, char *argv[])
 ...
 
 }
+```
 
 Pre-registered data type list: bool, int, qreal, QString, QByteArray, QVariantMap, void.
 
 
-```
 
 
 API
@@ -67,9 +67,11 @@ API
 (More API will be added upon request)
 
 **Future.isFinished(future)**
+
 Returns true if the asynchronous computation represented by this future has finished; otherwise returns false.
 
 **Future.onFinished(future, callback)**
+
 The callback will be invoked when the watched future finishes.
 
 **Future.promise(future)**
