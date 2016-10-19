@@ -1,6 +1,6 @@
 {
-  "name": "quick.future",
-  "description": "",
+  "name": "q.quick.future",
+  "description": "A QML wrapper of QFuture",
   "author": {
     "name": "Ben Lau",
     "email": "xbenlau@gmail.com"
