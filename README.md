@@ -24,7 +24,7 @@ Future.onFinished(future, function(value) {
 
 Future.promise(future).then(function(value) {
   // Future.promise creates a promise object by using Quick Promise.
-  // It is useful when you have multiple tasks / asynchronuous pending.
+  // It is useful when you have multiple asynchronuous tasks pending.
 });
 
 ...
