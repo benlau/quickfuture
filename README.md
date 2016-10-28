@@ -40,9 +40,8 @@ Installation
 Custom Type Registration
 ========================
 
-By default, QFuture<T> is not a standard type recognized by QVariant.
-Therefore, it can not be used in QML.
-You have to register QFuture<T> as a QMetaType per template type in order to get rid the error message.
+By default, QFuture<T> is not a standard type recognized by QML.
+It must be registered as a QMetaType per template type in order to get rid the error message.
 
 The same rule applies in Quick Future too.
 Common types are pre-registered already.
