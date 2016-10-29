@@ -27,6 +27,16 @@ Future.promise(future).then(function(value) {
   // It is useful when you have multiple asynchronuous tasks pending.
 });
 
+var promise = Future.promise(future);
+
+promise.reject(timer.trigger);
+
+promise.then(function(value) {
+  // It is called if the future has finished before timer timeout
+},function() {
+  // Once it timeout, run this function instead of previous one
+});
+
 ...
 
 ```
