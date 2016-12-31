@@ -1,5 +1,6 @@
 #include <QtConcurrent>
 #include <Automator>
+#include <QtQml>
 #include "actor.h"
 
 Actor::Actor(QObject *parent) : QObject(parent)
@@ -32,3 +33,21 @@ QFuture<void> Actor::alreadyFinished()
 {
     return QFuture<void>();
 }
+
+
+// First, define the singleton type provider function (callback).
+static QObject* provider(QQmlEngine *engine, QJSEngine *scriptEngine)
+{
+    Q_UNUSED(engine)
+    Q_UNUSED(scriptEngine)
+
+    Actor* actor = new Actor();
+
+    return actor;
+}
+
+static void init() {
+    qmlRegisterSingletonType<Actor>("FutureTests", 1, 0, "Actor", provider);
+}
+
+Q_COREAPP_STARTUP_FUNCTION(init)

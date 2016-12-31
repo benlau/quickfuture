@@ -53,22 +53,3 @@ void QuickFutureUnitTests::PromiseIsNotInstalled()
     QMetaObject::invokeMethod(object, "test",Qt::DirectConnection);
 
 }
-
-void QuickFutureUnitTests::qmlTests()
-{
-    QQmlApplicationEngine engine;
-    engine.addImportPath("qrc:///");
-    engine.rootContext()->setContextProperty("Actor", new Actor());
-
-    Automator automator(&engine);
-
-    QStringList files = QtShell::find(QString(SRCDIR) + "qmltests", "test_*.qml");
-    QVERIFY(files.size() > 0);
-
-    foreach (QString file, files) {
-        engine.load(file);
-    }
-
-    QVERIFY(automator.runTestCase());
-}
-

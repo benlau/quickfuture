@@ -24,10 +24,10 @@ include(vendor/vendor.pri)
 include($$ROOT_DIR/quickfuture.pri)
 
 DISTFILES +=     qpm.json     \
-    qmltests/test_Callback.qml \
     ../../README.md \
-    qmltests/test_Promise.qml \
-    qmltests/PromiseIsNotInstalled.qml
+    qmltests/PromiseIsNotInstalled.qml \
+    qmltests/tst_Callback.qml \
+    qmltests/tst_Promise.qml
 
 HEADERS +=     \
     quickfutureunittests.h \

@@ -13,7 +13,5 @@ private slots:
     void test_QFFuture();
 
     void PromiseIsNotInstalled();
-
-    void qmlTests();
 };
 

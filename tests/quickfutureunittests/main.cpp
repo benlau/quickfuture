@@ -29,6 +29,7 @@ int main(int argc, char *argv[])
     TestRunner runner;
     runner.addImportPath("qrc:///");
     runner.add<QuickFutureUnitTests>();
+    runner.add(QString(SRCDIR) + "/qmltests");
 
     int waitTime = 100;
     if (app.arguments().size() != 1) {

@@ -1,8 +1,10 @@
 import QtQuick 2.0
+import QtTest 1.1
 import Testable 1.0
 import Future 1.0
+import FutureTests 1.0
 
-TestableCase {
+TestCase {
 
     name: "CallbackTests";
 
