@@ -26,6 +26,8 @@ signals:
 public slots:
     bool isFinished(const QVariant& future);
 
+    bool isRunning(const QVariant& future);
+
     void onFinished(const QVariant& future, QJSValue func);
 
     QJSValue promise(QJSValue future);

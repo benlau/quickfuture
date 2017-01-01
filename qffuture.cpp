@@ -79,6 +79,17 @@ bool QFFuture::isFinished(const QVariant &future)
     return wrapper->isFinished(future);
 }
 
+bool QFFuture::isRunning(const QVariant &future)
+{
+    if (!m_wrappers.contains(typeId(future))) {
+        qWarning() << QString("Future: Can not handle input data type: %1").arg(QMetaType::typeName(future.type()));
+        return false;
+    }
+
+    QFVariantWrapperBase* wrapper = m_wrappers[typeId(future)];
+    return wrapper->isRunning(future);
+}
+
 void QFFuture::onFinished(const QVariant &future, QJSValue func)
 {
     if (!m_wrappers.contains(typeId(future))) {

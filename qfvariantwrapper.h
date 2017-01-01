@@ -37,6 +37,8 @@ public:
     }
 
     virtual bool isFinished(const QVariant& v) = 0;
+    virtual bool isRunning(const QVariant& v) = 0;
+
     virtual void onFinished(QPointer<QQmlEngine> engine, const QVariant& v, const QJSValue& func) = 0;
 };
 
@@ -91,6 +93,8 @@ class QFVariantWrapper : public QFVariantWrapperBase {
 public:
 
     QF_WRAPPER_DECL_READ(bool, isFinished)
+
+    QF_WRAPPER_DECL_READ(bool, isRunning)
 
     QF_WRAPPER_DECL_READ(bool, isPaused)
 
