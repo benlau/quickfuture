@@ -32,6 +32,8 @@ public slots:
 
     QJSValue promise(QJSValue future);
 
+    void sync(const QVariant& future, const QString& propertyInFuture, QObject* target, const QString& propertyInTarget = QString());
+
 private:
     static void registerType(int typeId, QFVariantWrapperBase* wrapper);
 

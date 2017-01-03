@@ -36,10 +36,28 @@ public:
     virtual inline ~QFVariantWrapperBase() {
     }
 
+    virtual bool isPaused(const QVariant& v) = 0;
     virtual bool isFinished(const QVariant& v) = 0;
     virtual bool isRunning(const QVariant& v) = 0;
 
     virtual void onFinished(QPointer<QQmlEngine> engine, const QVariant& v, const QJSValue& func) = 0;
+
+    virtual void sync(const QVariant &v, const QString &propertyInFuture, QObject *target, const QString &propertyInTarget) = 0;
+
+
+    bool property(const QVariant& v, const QString& name) {
+        bool res = false;
+        if (name == "isFinished") {
+            res = isFinished(v);
+        } else if (name == "isRunning") {
+            res = isRunning(v);
+        } else if (name == "isPaused") {
+            res = isPaused(v);
+        } else {
+            qWarning().noquote() << QString("Future: Unknown property: %1").arg(name);
+        }
+        return res;
+    }    
 };
 
 #define QF_WRAPPER_DECL_READ(type, method) \
@@ -102,6 +120,42 @@ public:
 
     QF_WRAPPER_CONNECT(onCanceled, isCanceled)
 
+    void sync(const QVariant &future, const QString &propertyInFuture, QObject *target, const QString &propertyInTarget) {
+        QPointer<QObject> object = target;
+        QString pt = propertyInTarget;
+        if (pt.isEmpty()) {
+            pt = propertyInFuture;
+        }
+
+        auto setProperty = [=]() {
+            if (object.isNull()) {
+                return;
+            }
+            bool value = property(future, propertyInFuture);
+            object->setProperty( pt.toUtf8().constData(), value);
+        };
+
+        setProperty();
+        QFuture<T> f = future.value<QFuture<T> >();
+
+        if (f.isFinished()) {
+            // No need to listen on an already finished future
+            return;
+        }
+
+        QFutureWatcher<T> *watcher = new QFutureWatcher<T>();
+        watcher->setFuture(f);
+
+        QObject::connect(watcher, &QFutureWatcherBase::canceled, setProperty);
+        QObject::connect(watcher, &QFutureWatcherBase::paused, setProperty);
+        QObject::connect(watcher, &QFutureWatcherBase::resumed, setProperty);
+        QObject::connect(watcher, &QFutureWatcherBase::started, setProperty);
+
+        QObject::connect(watcher,  &QFutureWatcherBase::finished, [=]() {
+            setProperty();
+            watcher->deleteLater();
+        });
+    }
 };
 
 

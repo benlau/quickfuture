@@ -71,7 +71,7 @@ void QFFuture::setEngine(QQmlEngine *engine)
 bool QFFuture::isFinished(const QVariant &future)
 {
     if (!m_wrappers.contains(typeId(future))) {
-        qWarning() << QString("QFFuture: Can not handle input data type: %1").arg(QMetaType::typeName(future.type()));
+        qWarning() << QString("Future: Can not handle input data type: %1").arg(QMetaType::typeName(future.type()));
         return false;
     }
 
@@ -93,7 +93,7 @@ bool QFFuture::isRunning(const QVariant &future)
 void QFFuture::onFinished(const QVariant &future, QJSValue func)
 {
     if (!m_wrappers.contains(typeId(future))) {
-        qWarning() << QString("QFFuture: Can not handle input data type: %1").arg(QMetaType::typeName(future.type()));
+        qWarning() << QString("Future: Can not handle input data type: %1").arg(QMetaType::typeName(future.type()));
         return;
     }
     QFVariantWrapperBase* wrapper = m_wrappers[typeId(future)];
@@ -113,6 +113,18 @@ QJSValue QFFuture::promise(QJSValue future)
     }
 
     return result;
+}
+
+void QFFuture::sync(const QVariant &future, const QString &propertyInFuture, QObject *target, const QString &propertyInTarget)
+{
+    if (!m_wrappers.contains(typeId(future))) {
+        qWarning() << QString("Future: Can not handle input data type: %1").arg(QMetaType::typeName(future.type()));
+        return;
+    }
+
+
+    QFVariantWrapperBase* wrapper = m_wrappers[typeId(future)];
+    wrapper->sync(future, propertyInFuture, target, propertyInTarget);
 }
 
 static QObject *provider(QQmlEngine *engine, QJSEngine *scriptEngine) {

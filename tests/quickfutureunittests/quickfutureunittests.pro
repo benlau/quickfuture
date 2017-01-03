@@ -27,7 +27,9 @@ DISTFILES +=     qpm.json     \
     ../../README.md \
     qmltests/PromiseIsNotInstalled.qml \
     qmltests/tst_Callback.qml \
-    qmltests/tst_Promise.qml
+    qmltests/tst_Promise.qml \
+    qmltests/tst_Sync.qml \
+    qmltests/CustomTestCase.qml
 
 HEADERS +=     \
     quickfutureunittests.h \
