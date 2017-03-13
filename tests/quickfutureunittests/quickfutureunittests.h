@@ -13,5 +13,7 @@ private slots:
     void test_QFFuture();
 
     void PromiseIsNotInstalled();
+
+    void test_subscribe();
 };
 
