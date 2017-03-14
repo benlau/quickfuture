@@ -88,7 +88,7 @@ void QuickFutureUnitTests::test_subscribe()
     };
 
     bFuture = QtConcurrent::run(bWorker);
-    iFuture = QuickFlux::subscribe(bFuture, iCleanupBool, this);
+    iFuture = QuickFlux::observe(bFuture, iCleanupBool, this);
     QCOMPARE(iFuture.isFinished(), false);
 
     QVERIFY(waitUntil([&](){
@@ -108,7 +108,7 @@ void QuickFutureUnitTests::test_subscribe()
     };
 
     bFuture = QtConcurrent::run(bWorker);
-    vFuture = QuickFlux::subscribe(bFuture, vCleanupBool, this);
+    vFuture = QuickFlux::observe(bFuture, vCleanupBool, this);
     QCOMPARE(vFuture.isFinished(), false);
 
     QVERIFY(waitUntil([&](){
@@ -131,7 +131,7 @@ void QuickFutureUnitTests::test_subscribe()
     };
 
     vFuture = QtConcurrent::run(vWorker);
-    vFuture2 = QuickFlux::subscribe(vFuture, vCleanupVoid, this);
+    vFuture2 = QuickFlux::observe(vFuture, vCleanupVoid, this);
     QCOMPARE(vFuture2.isFinished(), false);
 
     QVERIFY(waitUntil([&](){
@@ -148,7 +148,7 @@ void QuickFutureUnitTests::test_subscribe()
     vCleanupVoidCalled = false;
     vFuture = QFuture<void>();
     QCOMPARE(vFuture.isFinished(), true);
-    vFuture2 = QuickFlux::subscribe(vFuture, vCleanupVoid, this);
+    vFuture2 = QuickFlux::observe(vFuture, vCleanupVoid, this);
     QCOMPARE(vFuture2.isFinished(), false);
 
     QVERIFY(waitUntil([&](){

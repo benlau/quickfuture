@@ -68,7 +68,7 @@ namespace QuickFlux
     };
 
     template <typename F>
-    auto subscribe(QFuture<void> future, F func, QObject* context)  -> QFuture<decltype(func())>{
+    auto observe(QFuture<void> future, F func, QObject* context)  -> QFuture<decltype(func())>{
         auto *defer = new Defer<decltype(func())> (context);
 
         QFutureWatcher<void> *watcher = new QFutureWatcher<void>(context);
@@ -85,7 +85,7 @@ namespace QuickFlux
     }
 
     template <typename T,typename F>
-    auto subscribe(QFuture<T> future, F func, QObject* context) -> QFuture<decltype(func(future.result()))>  {
+    auto observe(QFuture<T> future, F func, QObject* context) -> QFuture<decltype(func(future.result()))>  {
 
         auto *defer = new Defer<decltype(func(future.result()))> (context);
 

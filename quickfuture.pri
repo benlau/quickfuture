@@ -7,5 +7,5 @@ SOURCES += \
 HEADERS += \
     $$PWD/qfvariantwrapper.h \
     $$PWD/qffuture.h \
-    $$PWD/qfsubscribe.h \
-    $$PWD/QuickFuture
+    $$PWD/QuickFuture \
+    $$PWD/qfobserve.h
