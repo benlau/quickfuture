@@ -101,8 +101,8 @@ public:
             QuickFuture::nextTick(listener); \
         } else { \
             watcher = new QFutureWatcher<T>(); \
-            watcher->setFuture(future); \
             QObject::connect(watcher, &QFutureWatcherBase::finished, listener); \
+            watcher->setFuture(future); \
         } \
     }
 
@@ -144,7 +144,6 @@ public:
         }
 
         QFutureWatcher<T> *watcher = new QFutureWatcher<T>();
-        watcher->setFuture(f);
 
         QObject::connect(watcher, &QFutureWatcherBase::canceled, setProperty);
         QObject::connect(watcher, &QFutureWatcherBase::paused, setProperty);
@@ -155,6 +154,8 @@ public:
             setProperty();
             watcher->deleteLater();
         });
+
+        watcher->setFuture(f);
     }
 };
 
