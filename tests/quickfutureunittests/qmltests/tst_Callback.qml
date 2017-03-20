@@ -4,7 +4,7 @@ import Testable 1.0
 import Future 1.0
 import FutureTests 1.0
 
-TestCase {
+CustomTestCase {
 
     name: "CallbackTests";
 
@@ -52,6 +52,25 @@ TestCase {
         });
         compare(called, false);
         wait(10);
+        compare(called, true);
+    }
+
+    function test_onCanceled() {
+        var future = Actor.canceled();
+        var called = false;
+
+        compare(Future.isFinished(future), true);
+        compare(Future.isRunning(future), false);
+        compare(Future.isCanceled(future), true);
+
+        Future.onCanceled(future, function() {
+            called = true;
+        });
+
+        waitUntil(function() {
+            return called;
+        }, 1000);
+
         compare(called, true);
     }
 

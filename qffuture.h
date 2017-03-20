@@ -28,7 +28,12 @@ public slots:
 
     bool isRunning(const QVariant& future);
 
+    bool isCanceled(const QVariant& future);
+
     void onFinished(const QVariant& future, QJSValue func);
+
+    void onCanceled(const QVariant& future, QJSValue func);
+
 
     QJSValue promise(QJSValue future);
 

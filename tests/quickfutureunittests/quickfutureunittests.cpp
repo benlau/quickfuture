@@ -38,8 +38,6 @@ void QuickFutureUnitTests::test_QFVariantWrapper()
 
     QFVariantWrapper<QString> wrapper;
     QVERIFY(wrapper.isFinished(v));
-
-
 }
 
 void QuickFutureUnitTests::test_QFFuture()

@@ -1,7 +1,10 @@
 #include <QtConcurrent>
 #include <Automator>
 #include <QtQml>
+#include <asyncfuture.h>
 #include "actor.h"
+
+using namespace AsyncFuture;
 
 Actor::Actor(QObject *parent) : QObject(parent)
 {
@@ -34,6 +37,14 @@ QFuture<void> Actor::alreadyFinished()
     return QFuture<void>();
 }
 
+QFuture<void> Actor::canceled()
+{
+    auto defer = deferred<void>();
+
+    defer.cancel();
+
+    return defer.future();
+}
 
 // First, define the singleton type provider function (callback).
 static QObject* provider(QQmlEngine *engine, QJSEngine *scriptEngine)

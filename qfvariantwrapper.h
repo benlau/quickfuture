@@ -39,8 +39,11 @@ public:
     virtual bool isPaused(const QVariant& v) = 0;
     virtual bool isFinished(const QVariant& v) = 0;
     virtual bool isRunning(const QVariant& v) = 0;
+    virtual bool isCanceled(const QVariant& v) = 0;
 
     virtual void onFinished(QPointer<QQmlEngine> engine, const QVariant& v, const QJSValue& func) = 0;
+
+    virtual void onCanceled(QPointer<QQmlEngine> engine, const QVariant& v, const QJSValue& func) = 0;
 
     virtual void sync(const QVariant &v, const QString &propertyInFuture, QObject *target, const QString &propertyInTarget) = 0;
 
@@ -115,6 +118,8 @@ public:
     QF_WRAPPER_DECL_READ(bool, isRunning)
 
     QF_WRAPPER_DECL_READ(bool, isPaused)
+
+    QF_WRAPPER_DECL_READ(bool, isCanceled)
 
     QF_WRAPPER_CONNECT(onFinished, isFinished)
 
