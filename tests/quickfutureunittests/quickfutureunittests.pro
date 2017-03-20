@@ -33,5 +33,6 @@ DISTFILES +=     qpm.json     \
 
 HEADERS +=     \
     quickfutureunittests.h \
-    actor.h
+    actor.h \
+    asyncfuture.h
 
