@@ -5,7 +5,7 @@
     "com.github.benlau.testable@1.0.2.15",
     "com.github.benlau.qtshell@0.3.2",
     "com.github.benlau.quickpromise@1.0.3",
-    "async.future.pri@0.1.1"
+    "async.future.pri@0.1.2"
   ],
   "license": "NONE",
   "pri_filename": "",
