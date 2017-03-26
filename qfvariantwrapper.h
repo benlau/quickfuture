@@ -29,6 +29,23 @@ namespace QuickFuture {
         QObject tmp;
         QObject::connect(&tmp, &QObject::destroyed, QCoreApplication::instance(), func, Qt::QueuedConnection);
     }
+
+    template <typename T>
+    inline QVariant toVariant(const QFuture<T> &future) {
+        if (!future.isResultReadyAt(0)) {
+            qWarning() << "Future.result(): The result is not ready!";
+            return QVariant();
+        }
+
+        return QVariant::fromValue<T>(future.result());
+    }
+
+    template <>
+    inline QVariant toVariant<void>(const QFuture<void> &future) {
+        Q_UNUSED(future);
+        return QVariant();
+    }
+
 }
 
 class QFVariantWrapperBase {
@@ -40,6 +57,8 @@ public:
     virtual bool isFinished(const QVariant& v) = 0;
     virtual bool isRunning(const QVariant& v) = 0;
     virtual bool isCanceled(const QVariant& v) = 0;
+
+    virtual QVariant result(const QVariant& v) = 0;
 
     virtual void onFinished(QPointer<QQmlEngine> engine, const QVariant& v, const QJSValue& func) = 0;
 
@@ -124,6 +143,11 @@ public:
     QF_WRAPPER_CONNECT(onFinished, isFinished)
 
     QF_WRAPPER_CONNECT(onCanceled, isCanceled)
+
+    QVariant result(const QVariant &future) {
+        QFuture<T> f = future.value<QFuture<T>>();
+        return QuickFuture::toVariant(f);
+    }
 
     void sync(const QVariant &future, const QString &propertyInFuture, QObject *target, const QString &propertyInTarget) {
         QPointer<QObject> object = target;

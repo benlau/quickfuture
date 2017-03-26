@@ -74,5 +74,15 @@ CustomTestCase {
         compare(called, true);
     }
 
+    function test_result() {
+        var future = Actor.delayReturnBool(true);
+        waitUntil(function() {
+            return Future.isFinished(future);
+        }, 1000);
+
+        compare(Future.result(future), true);
+
+    }
+
 
 }

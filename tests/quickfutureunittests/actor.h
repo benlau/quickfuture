@@ -21,6 +21,8 @@ public slots:
     QFuture<void> alreadyFinished();
 
     QFuture<void> canceled();
+
+    QFuture<bool> delayReturnBool(bool value);
 };
 
 #endif // FILEACTOR_H

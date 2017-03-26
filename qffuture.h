@@ -34,6 +34,7 @@ public slots:
 
     void onCanceled(const QVariant& future, QJSValue func);
 
+    QVariant result(const QVariant& future);
 
     QJSValue promise(QJSValue future);
 

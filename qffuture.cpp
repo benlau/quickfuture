@@ -121,6 +121,18 @@ void QFFuture::onCanceled(const QVariant &future, QJSValue func)
     wrapper->onCanceled(m_engine, future, func);
 }
 
+QVariant QFFuture::result(const QVariant &future)
+{
+    QVariant res;
+    if (!m_wrappers.contains(typeId(future))) {
+        qWarning() << QString("Future: Can not handle input data type: %1").arg(QMetaType::typeName(future.type()));
+        return res;
+    }
+
+    QFVariantWrapperBase* wrapper = m_wrappers[typeId(future)];
+    return wrapper->result(future);
+}
+
 QJSValue QFFuture::promise(QJSValue future)
 {
     QJSValue create = promiseCreator.property("create");
