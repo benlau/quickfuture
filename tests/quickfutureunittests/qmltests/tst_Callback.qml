@@ -82,6 +82,15 @@ CustomTestCase {
 
         compare(Future.result(future), true);
 
+        future = Actor.delayReturnQSize(Qt.size(1, 2));
+
+        waitUntil(function() {
+            return Future.isFinished(future);
+        }, 1000);
+
+        var result = Future.result(future);
+        compare(result.width, 1);
+        compare(result.height, 2);
     }
 
 

@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include <TestRunner>
 #include <QFuture>
+#include <QSize>
+#include <qffuture.h>
 #include "quickfutureunittests.h"
 
 void handleBacktrace(int sig) {
@@ -20,11 +22,15 @@ void handleBacktrace(int sig) {
     exit(1);
 }
 
+Q_DECLARE_METATYPE(QFuture<QSize>)
+
 int main(int argc, char *argv[])
 {
     signal(SIGSEGV, handleBacktrace);
 
     QGuiApplication app(argc, argv);
+
+    QFFuture::registerType<QSize>();
 
     TestRunner runner;
     runner.addImportPath("qrc:///");

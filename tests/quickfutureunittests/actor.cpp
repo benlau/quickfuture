@@ -58,6 +58,18 @@ QFuture<bool> Actor::delayReturnBool(bool value)
     return defer.future();
 }
 
+QFuture<QSize> Actor::delayReturnQSize(QSize value)
+{
+    auto defer = deferred<QSize>();
+
+    QTimer::singleShot(50,[=]() {
+        auto d = defer;
+        d.complete(value);
+    });
+
+    return defer.future();
+}
+
 // First, define the singleton type provider function (callback).
 static QObject* provider(QQmlEngine *engine, QJSEngine *scriptEngine)
 {

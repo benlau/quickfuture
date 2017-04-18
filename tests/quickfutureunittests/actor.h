@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QFuture>
+#include <QSize>
 
 class Actor : public QObject
 {
@@ -23,6 +24,8 @@ public slots:
     QFuture<void> canceled();
 
     QFuture<bool> delayReturnBool(bool value);
+
+    QFuture<QSize> delayReturnQSize(QSize value);
 };
 
 #endif // FILEACTOR_H
