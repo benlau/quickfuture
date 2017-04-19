@@ -49,7 +49,7 @@ void Future::setEngine(QQmlEngine *engine)
 
     QString qml = "import QtQuick 2.0\n"
                   "import QuickPromise 1.0\n"
-                  "import Future 1.0\n"
+                  "import QuickFuture 1.0\n"
                   "QtObject { \n"
                   "function create(future) {\n"
                   "    var promise = Q.promise();\n"
@@ -184,6 +184,7 @@ static void init() {
     });
 
     qmlRegisterSingletonType<Future>("Future", 1, 0, "Future", provider);
+    qmlRegisterSingletonType<Future>("QuickFuture", 1, 0, "Future", provider);
 
     Future::registerType<QString>();
     Future::registerType<int>();
@@ -195,7 +196,6 @@ static void init() {
     Future::registerType<QVariantMap>();
     Future::registerType<QSize>();
 }
-
 
 Q_COREAPP_STARTUP_FUNCTION(init)
 

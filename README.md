@@ -9,7 +9,7 @@ QuickFuture is a QML wrapper of QFuture. It allows user to access and listen fro
 **Example**
 
 ```
-import Future 1.0
+import QuickFuture 1.0
 
 ...
 
@@ -85,10 +85,39 @@ API
 
 Returns true if the asynchronous computation represented by this future has finished; otherwise returns false.
 
+**Future.isRunning(future)**
+
+**Future.isCanceled(future)**
+
 **Future.onFinished(future, callback)**
 
 The callback will be invoked when the watched future finishes.
 
+**Future.onCanceled(future, callback)**
+
 **Future.promise(future)**
 
 Create a promise object which will be resolved when the future has finished. It must have QuickPromise installed and setup properly before using this function.
+
+**Future.result(future)**
+
+Object the result of a Future object.
+
+**Future.sync(future, propertyAtFuture, target, propertyAtTarget)**
+
+Synchronize a property in future object to target object.
+
+Example:
+```
+
+QtObject {
+    id: target1
+    property var isRunning
+    property var isFinished
+}
+
+// Future.sync(future,"isRunning", target1, "isRunning");
+```
+
+Supported properties: "isRunning", "isCanceled", "isFinished"
+
