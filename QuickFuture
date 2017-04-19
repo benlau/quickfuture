@@ -1,1 +1,2 @@
 #include "qffuture.h"
+#include "quickfuture.h"

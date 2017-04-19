@@ -6,7 +6,7 @@
 #include <TestRunner>
 #include <QFuture>
 #include <QSize>
-#include <qffuture.h>
+#include <QuickFuture>
 #include "quickfutureunittests.h"
 
 void handleBacktrace(int sig) {
@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    QFFuture::registerType<QSize>();
+    QuickFuture::registerType<QSize>();
 
     TestRunner runner;
     runner.addImportPath("qrc:///");
