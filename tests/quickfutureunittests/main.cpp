@@ -30,8 +30,6 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    QuickFuture::registerType<QSize>();
-
     TestRunner runner;
     runner.addImportPath("qrc:///");
     runner.add<QuickFutureUnitTests>();

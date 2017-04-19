@@ -13,7 +13,7 @@ Q_DECLARE_METATYPE(QFuture<qreal>)
 Q_DECLARE_METATYPE(QFuture<QByteArray>)
 Q_DECLARE_METATYPE(QFuture<QVariant>)
 Q_DECLARE_METATYPE(QFuture<QVariantMap>)
-
+Q_DECLARE_METATYPE(QFuture<QSize>)
 
 static int typeId(const QVariant& v) {
     return v.userType();
@@ -191,7 +191,8 @@ static void init() {
     QFFuture::registerType<QByteArray>();
     QFFuture::registerType<QVariant>();
     QFFuture::registerType<QVariantMap>();
-
+    QFFuture::registerType<QSize>();
 }
+
 
 Q_COREAPP_STARTUP_FUNCTION(init)

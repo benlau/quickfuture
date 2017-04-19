@@ -58,7 +58,7 @@ Common types are pre-registered already.
 For your own custom type, you can register it by:
 
 ```
-#include <QFFuture>
+#include <QuickFuture>
 Q_DECLARE_METATYPE(QFuture<CustomType>)
 
 ...
@@ -67,15 +67,13 @@ int main(int argc, char *argv[])
 {
 
 ...
-   QFFuture::registerType<CustomType>();
+   QuickFuture::registerType<CustomType>();
 ...
 
 }
 ```
 
-Pre-registered data type list: bool, int, qreal, QString, QByteArray, QVariantMap, void.
-
-
+Pre-registered data type list: bool, int, qreal, QString, QByteArray, QVariantMap, QSize, void.
 
 
 API
