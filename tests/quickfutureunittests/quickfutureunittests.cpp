@@ -9,6 +9,7 @@
 #include "quickfutureunittests.h"
 
 Q_DECLARE_METATYPE(QFuture<QString>)
+using namespace QuickFuture;
 
 template <typename F>
 static bool waitUntil(F f, int timeout = -1) {
@@ -36,13 +37,13 @@ void QuickFutureUnitTests::test_QFVariantWrapper()
 
     QVERIFY(future.isFinished());
 
-    QFVariantWrapper<QString> wrapper;
+    VariantWrapper<QString> wrapper;
     QVERIFY(wrapper.isFinished(v));
 }
 
 void QuickFutureUnitTests::test_QFFuture()
 {
-    QFFuture wrapper;
+    Future wrapper;
     QFuture<QString> future;
     QVariant v = QVariant::fromValue<QFuture<QString> >(future);
 

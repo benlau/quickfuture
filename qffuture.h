@@ -6,15 +6,17 @@
 #include <QQmlEngine>
 #include "qfvariantwrapper.h"
 
-class QFFuture : public QObject
+namespace QuickFuture {
+
+class Future : public QObject
 {
     Q_OBJECT
 public:
-    explicit QFFuture(QObject *parent = 0);
+    explicit Future(QObject *parent = 0);
 
     template <typename T>
     static void registerType() {
-        registerType(qRegisterMetaType<QFuture<T> >(), new QFVariantWrapper<T>() );
+        registerType(qRegisterMetaType<QFuture<T> >(), new VariantWrapper<T>() );
     }
 
     QJSEngine *engine() const;
@@ -41,10 +43,12 @@ public slots:
     void sync(const QVariant& future, const QString& propertyInFuture, QObject* target, const QString& propertyInTarget = QString());
 
 private:
-    static void registerType(int typeId, QFVariantWrapperBase* wrapper);
+    static void registerType(int typeId, VariantWrapperBase* wrapper);
 
     QPointer<QQmlEngine> m_engine;
     QJSValue promiseCreator;
 };
+
+}
 
 #endif // QFFUTURE_H

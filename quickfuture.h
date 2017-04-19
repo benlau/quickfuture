@@ -5,10 +5,9 @@
 
 namespace QuickFuture {
 
-
     template <typename T>
     static void registerType() {
-        QFFuture::registerType<T>();
+        Future::registerType<T>();
     }
 
 }

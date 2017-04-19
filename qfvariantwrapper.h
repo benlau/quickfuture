@@ -46,11 +46,9 @@ namespace QuickFuture {
         return QVariant();
     }
 
-}
-
-class QFVariantWrapperBase {
+class VariantWrapperBase {
 public:
-    virtual inline ~QFVariantWrapperBase() {
+    virtual inline ~VariantWrapperBase() {
     }
 
     virtual bool isPaused(const QVariant& v) = 0;
@@ -129,7 +127,7 @@ public:
     }
 
 template <typename T>
-class QFVariantWrapper : public QFVariantWrapperBase {
+class VariantWrapper : public VariantWrapperBase {
 public:
 
     QF_WRAPPER_DECL_READ(bool, isFinished)
@@ -188,5 +186,6 @@ public:
     }
 };
 
+} // End of namespace
 
 #endif // QFVARIANTWRAPPER_H

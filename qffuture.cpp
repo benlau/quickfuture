@@ -3,8 +3,6 @@
 #include <QQmlComponent>
 #include "qffuture.h"
 
-static QMap<int, QFVariantWrapperBase*> m_wrappers;
-
 Q_DECLARE_METATYPE(QFuture<QString>)
 Q_DECLARE_METATYPE(QFuture<int>)
 Q_DECLARE_METATYPE(QFuture<void>)
@@ -15,15 +13,19 @@ Q_DECLARE_METATYPE(QFuture<QVariant>)
 Q_DECLARE_METATYPE(QFuture<QVariantMap>)
 Q_DECLARE_METATYPE(QFuture<QSize>)
 
+namespace QuickFuture {
+
+static QMap<int, VariantWrapperBase*> m_wrappers;
+
 static int typeId(const QVariant& v) {
     return v.userType();
 }
 
-QFFuture::QFFuture(QObject *parent) : QObject(parent)
+Future::Future(QObject *parent) : QObject(parent)
 {
 }
 
-void QFFuture::registerType(int typeId, QFVariantWrapperBase* wrapper)
+void Future::registerType(int typeId, VariantWrapperBase* wrapper)
 {
     if (m_wrappers.contains(typeId)) {
         qWarning() << QString("QFFuture::registerType:It is already registered:%1").arg(QMetaType::typeName(typeId));
@@ -33,12 +35,12 @@ void QFFuture::registerType(int typeId, QFVariantWrapperBase* wrapper)
     m_wrappers[typeId] = wrapper;
 }
 
-QJSEngine *QFFuture::engine() const
+QJSEngine *Future::engine() const
 {
     return m_engine;
 }
 
-void QFFuture::setEngine(QQmlEngine *engine)
+void Future::setEngine(QQmlEngine *engine)
 {
     m_engine = engine;
     if (m_engine.isNull()) {
@@ -68,60 +70,60 @@ void QFFuture::setEngine(QQmlEngine *engine)
     promiseCreator = engine->newQObject(holder);
 }
 
-bool QFFuture::isFinished(const QVariant &future)
+bool Future::isFinished(const QVariant &future)
 {
     if (!m_wrappers.contains(typeId(future))) {
         qWarning() << QString("Future: Can not handle input data type: %1").arg(QMetaType::typeName(future.type()));
         return false;
     }
 
-    QFVariantWrapperBase* wrapper = m_wrappers[typeId(future)];
+    VariantWrapperBase* wrapper = m_wrappers[typeId(future)];
     return wrapper->isFinished(future);
 }
 
-bool QFFuture::isRunning(const QVariant &future)
+bool Future::isRunning(const QVariant &future)
 {
     if (!m_wrappers.contains(typeId(future))) {
         qWarning() << QString("Future: Can not handle input data type: %1").arg(QMetaType::typeName(future.type()));
         return false;
     }
 
-    QFVariantWrapperBase* wrapper = m_wrappers[typeId(future)];
+    VariantWrapperBase* wrapper = m_wrappers[typeId(future)];
     return wrapper->isRunning(future);
 }
 
-bool QFFuture::isCanceled(const QVariant &future)
+bool Future::isCanceled(const QVariant &future)
 {
     if (!m_wrappers.contains(typeId(future))) {
         qWarning() << QString("Future: Can not handle input data type: %1").arg(QMetaType::typeName(future.type()));
         return false;
     }
 
-    QFVariantWrapperBase* wrapper = m_wrappers[typeId(future)];
+    VariantWrapperBase* wrapper = m_wrappers[typeId(future)];
     return wrapper->isCanceled(future);
 }
 
-void QFFuture::onFinished(const QVariant &future, QJSValue func)
+void Future::onFinished(const QVariant &future, QJSValue func)
 {
     if (!m_wrappers.contains(typeId(future))) {
         qWarning() << QString("Future: Can not handle input data type: %1").arg(QMetaType::typeName(future.type()));
         return;
     }
-    QFVariantWrapperBase* wrapper = m_wrappers[typeId(future)];
+    VariantWrapperBase* wrapper = m_wrappers[typeId(future)];
     wrapper->onFinished(m_engine, future, func);
 }
 
-void QFFuture::onCanceled(const QVariant &future, QJSValue func)
+void Future::onCanceled(const QVariant &future, QJSValue func)
 {
     if (!m_wrappers.contains(typeId(future))) {
         qWarning() << QString("Future: Can not handle input data type: %1").arg(QMetaType::typeName(future.type()));
         return;
     }
-    QFVariantWrapperBase* wrapper = m_wrappers[typeId(future)];
+    VariantWrapperBase* wrapper = m_wrappers[typeId(future)];
     wrapper->onCanceled(m_engine, future, func);
 }
 
-QVariant QFFuture::result(const QVariant &future)
+QVariant Future::result(const QVariant &future)
 {
     QVariant res;
     if (!m_wrappers.contains(typeId(future))) {
@@ -129,11 +131,11 @@ QVariant QFFuture::result(const QVariant &future)
         return res;
     }
 
-    QFVariantWrapperBase* wrapper = m_wrappers[typeId(future)];
+    VariantWrapperBase* wrapper = m_wrappers[typeId(future)];
     return wrapper->result(future);
 }
 
-QJSValue QFFuture::promise(QJSValue future)
+QJSValue Future::promise(QJSValue future)
 {
     QJSValue create = promiseCreator.property("create");
     QJSValueList args;
@@ -148,7 +150,7 @@ QJSValue QFFuture::promise(QJSValue future)
     return result;
 }
 
-void QFFuture::sync(const QVariant &future, const QString &propertyInFuture, QObject *target, const QString &propertyInTarget)
+void Future::sync(const QVariant &future, const QString &propertyInFuture, QObject *target, const QString &propertyInTarget)
 {
     if (!m_wrappers.contains(typeId(future))) {
         qWarning() << QString("Future: Can not handle input data type: %1").arg(QMetaType::typeName(future.type()));
@@ -156,14 +158,14 @@ void QFFuture::sync(const QVariant &future, const QString &propertyInFuture, QOb
     }
 
 
-    QFVariantWrapperBase* wrapper = m_wrappers[typeId(future)];
+    VariantWrapperBase* wrapper = m_wrappers[typeId(future)];
     wrapper->sync(future, propertyInFuture, target, propertyInTarget);
 }
 
 static QObject *provider(QQmlEngine *engine, QJSEngine *scriptEngine) {
     Q_UNUSED(scriptEngine);
 
-    QFFuture* object = new QFFuture();
+    Future* object = new Future();
     object->setEngine(engine);
 
     return object;
@@ -181,18 +183,20 @@ static void init() {
         }
     });
 
-    qmlRegisterSingletonType<QFFuture>("Future", 1, 0, "Future", provider);
+    qmlRegisterSingletonType<Future>("Future", 1, 0, "Future", provider);
 
-    QFFuture::registerType<QString>();
-    QFFuture::registerType<int>();
-    QFFuture::registerType<void>();
-    QFFuture::registerType<bool>();
-    QFFuture::registerType<qreal>();
-    QFFuture::registerType<QByteArray>();
-    QFFuture::registerType<QVariant>();
-    QFFuture::registerType<QVariantMap>();
-    QFFuture::registerType<QSize>();
+    Future::registerType<QString>();
+    Future::registerType<int>();
+    Future::registerType<void>();
+    Future::registerType<bool>();
+    Future::registerType<qreal>();
+    Future::registerType<QByteArray>();
+    Future::registerType<QVariant>();
+    Future::registerType<QVariantMap>();
+    Future::registerType<QSize>();
 }
 
 
 Q_COREAPP_STARTUP_FUNCTION(init)
+
+} // End of namespace
