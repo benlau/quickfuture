@@ -28,7 +28,7 @@ Future::Future(QObject *parent) : QObject(parent)
 void Future::registerType(int typeId, VariantWrapperBase* wrapper)
 {
     if (m_wrappers.contains(typeId)) {
-        qWarning() << QString("QFFuture::registerType:It is already registered:%1").arg(QMetaType::typeName(typeId));
+        qWarning() << QString("QuickFuture::registerType:It is already registered:%1").arg(QMetaType::typeName(typeId));
         return;
     }
 

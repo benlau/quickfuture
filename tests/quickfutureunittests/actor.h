@@ -9,6 +9,12 @@ class Actor : public QObject
 {
     Q_OBJECT
 public:
+    class Reply {
+    public:
+        int code;
+        QString message;
+    };
+
     explicit Actor(QObject *parent = 0);
 
 signals:
@@ -26,6 +32,9 @@ public slots:
     QFuture<bool> delayReturnBool(bool value);
 
     QFuture<QSize> delayReturnQSize(QSize value);
+
+    QFuture<Actor::Reply> delayReturnReply();
+
 };
 
 #endif // FILEACTOR_H

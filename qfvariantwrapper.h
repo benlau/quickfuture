@@ -8,8 +8,11 @@
 #include <QPointer>
 #include <QJSEngine>
 #include <QCoreApplication>
+#include <functional>
 
 namespace QuickFuture {
+
+    typedef std::function<QVariant(void*)> Converter;
 
     template <typename T>
     inline QJSValueList valueList(const QPointer<QQmlEngine>& engine, const QFuture<T>& future) {
@@ -31,23 +34,36 @@ namespace QuickFuture {
     }
 
     template <typename T>
-    inline QVariant toVariant(const QFuture<T> &future) {
+    inline QVariant toVariant(const QFuture<T> &future, Converter converter) {
         if (!future.isResultReadyAt(0)) {
             qWarning() << "Future.result(): The result is not ready!";
             return QVariant();
         }
 
-        return QVariant::fromValue<T>(future.result());
+        QVariant ret;
+
+        if (converter != nullptr) {
+            T t = future.result();
+            ret = converter(&t);
+        } else {
+            ret =  QVariant::fromValue<T>(future.result());
+        }
+
+        return ret;
     }
 
     template <>
-    inline QVariant toVariant<void>(const QFuture<void> &future) {
+    inline QVariant toVariant<void>(const QFuture<void> &future, Converter converter) {
+        Q_UNUSED(converter);
         Q_UNUSED(future);
         return QVariant();
     }
 
 class VariantWrapperBase {
 public:
+    VariantWrapperBase() {
+    }
+
     virtual inline ~VariantWrapperBase() {
     }
 
@@ -64,7 +80,7 @@ public:
 
     virtual void sync(const QVariant &v, const QString &propertyInFuture, QObject *target, const QString &propertyInTarget) = 0;
 
-
+    // Obtain the value of property by name
     bool property(const QVariant& v, const QString& name) {
         bool res = false;
         if (name == "isFinished") {
@@ -77,7 +93,9 @@ public:
             qWarning().noquote() << QString("Future: Unknown property: %1").arg(name);
         }
         return res;
-    }    
+    }
+
+    Converter converter;
 };
 
 #define QF_WRAPPER_DECL_READ(type, method) \
@@ -144,7 +162,7 @@ public:
 
     QVariant result(const QVariant &future) {
         QFuture<T> f = future.value<QFuture<T>>();
-        return QuickFuture::toVariant(f);
+        return QuickFuture::toVariant(f, converter);
     }
 
     void sync(const QVariant &future, const QString &propertyInFuture, QObject *target, const QString &propertyInTarget) {

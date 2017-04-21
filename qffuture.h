@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QFuture>
 #include <QQmlEngine>
+#include <QVariantMap>
 #include "qfvariantwrapper.h"
 
 namespace QuickFuture {
@@ -17,6 +18,15 @@ public:
     template <typename T>
     static void registerType() {
         registerType(qRegisterMetaType<QFuture<T> >(), new VariantWrapper<T>() );
+    }
+
+    template <typename T>
+    static void registerType(std::function<QVariant(T)> converter ) {
+        VariantWrapper<T>* wrapper = new VariantWrapper<T>();
+        wrapper->converter = [=](void* data) {
+            return converter(*(T*) data);
+        };
+        registerType(qRegisterMetaType<QFuture<T> >(), wrapper);
     }
 
     QJSEngine *engine() const;

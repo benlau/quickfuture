@@ -59,6 +59,7 @@ For your own custom type, you can register it by:
 
 ```
 #include <QuickFuture>
+Q_DECLARE_METATYPE(CustomType)
 Q_DECLARE_METATYPE(QFuture<CustomType>)
 
 ...

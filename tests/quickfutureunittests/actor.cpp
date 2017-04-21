@@ -1,4 +1,5 @@
 #include <QtConcurrent>
+#include <QuickFuture>
 #include <Automator>
 #include <QtQml>
 #include <asyncfuture.h>
@@ -70,6 +71,21 @@ QFuture<QSize> Actor::delayReturnQSize(QSize value)
     return defer.future();
 }
 
+QFuture<Actor::Reply> Actor::delayReturnReply()
+{
+    auto defer = deferred<Reply>();
+
+    QTimer::singleShot(50,[=]() {
+        auto d = defer;
+        Reply reply;
+        reply.code = -1;
+        reply.message = "reply";
+        d.complete(reply);
+    });
+
+    return defer.future();
+}
+
 // First, define the singleton type provider function (callback).
 static QObject* provider(QQmlEngine *engine, QJSEngine *scriptEngine)
 {
@@ -81,8 +97,17 @@ static QObject* provider(QQmlEngine *engine, QJSEngine *scriptEngine)
     return actor;
 }
 
+Q_DECLARE_METATYPE(Actor::Reply)
+Q_DECLARE_METATYPE(QFuture<Actor::Reply>)
+
 static void init() {
     qmlRegisterSingletonType<Actor>("FutureTests", 1, 0, "Actor", provider);
+    QuickFuture::registerType<Actor::Reply>([](Actor::Reply reply) -> QVariant {
+        QVariantMap map;
+        map["code"] = reply.code;
+        map["message"] = reply.message;
+        return map;
+    });
 }
 
 Q_COREAPP_STARTUP_FUNCTION(init)
