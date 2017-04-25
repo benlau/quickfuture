@@ -82,18 +82,20 @@ Pre-registered data type list: bool, int, qreal, QString, QByteArray, QVariantMa
 Custom Converter Function
 -------------------------
 
-When you are registering a custom type, you may provide a custom converter function for making a QML friendly data structure (e.g QVariantMap). The value could be obtained by using `Future.result()`
+When you are registering a custom type, you may assign a custom converter function for making a QML friendly data structure (e.g QVariantMap) from the custom type. The value could be obtained by using `Future.result()`
 
 Example
 
 ```c++
 class Actor : public QObject {
+Q_OBJECT
 public:
   class Reply {
     public:
       int code;
       QString message;
   };
+  QFuture<Reply> read(QString source);
 }
 
 static void init() {
@@ -108,6 +110,14 @@ static void init() {
 
 Q_COREAPP_STARTUP_FUNCTION(init)
 ```
+
+```QML
+
+var future = Actor.read(source);
+....
+Future.result(future); // Print { code: 0, message: ""} if the reply is empty
+```
+
 
 API
 ===
