@@ -115,7 +115,7 @@ Q_COREAPP_STARTUP_FUNCTION(init)
 
 var future = Actor.read(source);
 ....
-Future.result(future); // Print { code: 0, message: ""} if the reply is empty
+console.log(Future.result(future)); // Print { code: 0, message: ""} if the reply is empty
 ```
 
 
