@@ -35,3 +35,4 @@ HEADERS +=     \
     quickfutureunittests.h \
     actor.h
 
+DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000
