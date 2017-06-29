@@ -102,7 +102,30 @@ CustomTestCase {
         result = Future.result(future);
         compare(result.code, -1);
         compare(result.message, "reply");
+    }
 
+    function test_progressValueChanged() {
+        var future, result;
+        future = Actor.delayMapped(16);
+        compare(Future.progressValue(future), 0);
+        compare(Future.progressMinimum(future), 0);
+        compare(Future.progressMaximum(future), 16);
+        var list = [];
+
+        Future.onProgressValueChanged(future, function(value) {
+            list.push(value);
+        });
+
+        waitUntil(function() {
+            return Future.isFinished(future);
+        }, 1000);
+
+        compare(Future.isFinished(future), true);
+
+        compare(Future.progressValue(future), 16);
+        compare(Future.progressMinimum(future), 0);
+        compare(Future.progressMaximum(future), 16);
+        compare(list.length > 1, true);
     }
 
 

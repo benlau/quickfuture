@@ -42,9 +42,17 @@ public slots:
 
     bool isCanceled(const QVariant& future);
 
+    int progressValue(const QVariant& future);
+
+    int progressMinimum(const QVariant& future);
+
+    int progressMaximum(const QVariant& future);
+
     void onFinished(const QVariant& future, QJSValue func);
 
     void onCanceled(const QVariant& future, QJSValue func);
+
+    void onProgressValueChanged(const QVariant& future, QJSValue func);
 
     QVariant result(const QVariant& future);
 

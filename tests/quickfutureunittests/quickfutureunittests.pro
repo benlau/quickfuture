@@ -23,6 +23,8 @@ DEFINES += SRCDIR=\\\"$$PWD/\\\"
 include(vendor/vendor.pri)
 include($$ROOT_DIR/quickfuture.pri)
 
+DEFINES += QUICK_TEST_SOURCE_DIR=\\\"$$PWD\\\"
+
 DISTFILES +=     qpm.json     \
     ../../README.md \
     qmltests/PromiseIsNotInstalled.qml \

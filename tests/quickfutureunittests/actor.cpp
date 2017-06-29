@@ -7,6 +7,11 @@
 
 using namespace AsyncFuture;
 
+static int delayWorker(int value) {
+    Automator::wait(100);
+    return value * value;
+}
+
 Actor::Actor(QObject *parent) : QObject(parent)
 {
 
@@ -22,7 +27,17 @@ QFuture<QString> Actor::read(const QString &fileName)
         }
 
         return file.readAll();
-    });
+                             });
+}
+
+QFuture<int> Actor::delayMapped(int count)
+{
+    QList<int> list;
+    for (int i = 0 ; i < count ;i++) {
+        list << i;
+    }
+
+    return QtConcurrent::mapped(list, delayWorker);
 }
 
 QFuture<void> Actor::dummy()

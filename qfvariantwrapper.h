@@ -59,6 +59,15 @@ namespace QuickFuture {
         return QVariant();
     }
 
+    inline void printException(QJSValue value) {
+        QString message = QString("%1:%2: %3: %4")
+                          .arg(value.property("fileName").toString())
+                          .arg(value.property("lineNumber").toString())
+                          .arg(value.property("name").toString())
+                          .arg(value.property("message").toString());
+        qWarning() << message;
+    }
+
 class VariantWrapperBase {
 public:
     VariantWrapperBase() {
@@ -72,11 +81,19 @@ public:
     virtual bool isRunning(const QVariant& v) = 0;
     virtual bool isCanceled(const QVariant& v) = 0;
 
+    virtual int progressValue(const QVariant& v) = 0;
+
+    virtual int progressMinimum(const QVariant& v) = 0;
+
+    virtual int progressMaximum(const QVariant& v) = 0;
+
     virtual QVariant result(const QVariant& v) = 0;
 
     virtual void onFinished(QPointer<QQmlEngine> engine, const QVariant& v, const QJSValue& func) = 0;
 
     virtual void onCanceled(QPointer<QQmlEngine> engine, const QVariant& v, const QJSValue& func) = 0;
+
+    virtual void onProgressValueChanged(QPointer<QQmlEngine> engine, const QVariant& v, const QJSValue& func) = 0;
 
     virtual void sync(const QVariant &v, const QString &propertyInFuture, QObject *target, const QString &propertyInTarget) = 0;
 
@@ -116,19 +133,14 @@ public:
             qWarning() << "Future." #method ": Callback is not callable"; \
             return; \
         } \
-        QFuture<T> future = v.value<QFuture<T> >(); \
+        QFuture<T> future = v.value<QFuture<T>>(); \
         QFutureWatcher<T> *watcher = 0; \
         auto listener = [=]() { \
             if (!engine.isNull()) { \
                 QJSValue callback = func; \
                 QJSValue ret = callback.call(QuickFuture::valueList<T>(engine, future)); \
                 if (ret.isError()) { \
-                    QString message = QString("%1:%2: %3: %4") \
-                                      .arg(ret.property("fileName").toString()) \
-                                      .arg(ret.property("lineNumber").toString()) \
-                                      .arg(ret.property("name").toString()) \
-                                      .arg(ret.property("message").toString()); \
-                    qWarning() << message; \
+                    printException(ret); \
                 } \
             } \
             if (watcher != 0) { \
@@ -156,6 +168,12 @@ public:
 
     QF_WRAPPER_DECL_READ(bool, isCanceled)
 
+    QF_WRAPPER_DECL_READ(int, progressValue)
+
+    QF_WRAPPER_DECL_READ(int, progressMinimum)
+
+    QF_WRAPPER_DECL_READ(int, progressMaximum)
+
     QF_WRAPPER_CONNECT(onFinished, isFinished)
 
     QF_WRAPPER_CONNECT(onCanceled, isCanceled)
@@ -163,6 +181,34 @@ public:
     QVariant result(const QVariant &future) {
         QFuture<T> f = future.value<QFuture<T>>();
         return QuickFuture::toVariant(f, converter);
+    }
+
+    void onProgressValueChanged(QPointer<QQmlEngine> engine, const QVariant &v, const QJSValue &func) {
+        if (!func.isCallable()) {
+            qWarning() << "Future.onProgressValueChanged: Callback is not callable";
+            return;
+        }
+
+        QFuture<T> future = v.value<QFuture<T>>();
+        QFutureWatcher<T> *watcher = 0;
+        auto listener = [=](int value) {
+            if (!engine.isNull()) {
+                QJSValue callback = func;
+                QJSValueList args;
+                args << engine->toScriptValue<int>(value);
+                QJSValue ret = callback.call(args);
+                if (ret.isError()) {
+                    printException(ret);
+                }
+            }
+            if (watcher != 0) {
+                delete watcher;
+            }
+        };
+
+        watcher = new QFutureWatcher<T>();
+        QObject::connect(watcher, &QFutureWatcherBase::progressValueChanged, listener);
+        watcher->setFuture(future);
     }
 
     void sync(const QVariant &future, const QString &propertyInFuture, QObject *target, const QString &propertyInTarget) {

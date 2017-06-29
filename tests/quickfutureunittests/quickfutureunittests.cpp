@@ -27,7 +27,10 @@ static bool waitUntil(F f, int timeout = -1) {
 
 QuickFutureUnitTests::QuickFutureUnitTests(QObject *parent) : QObject(parent)
 {
-
+    auto ref = [=]() {
+        QTest::qExec(this, 0, 0); // Autotest detect available test cases of a QObject by looking for "QTest::qExec" in source code
+    };
+    Q_UNUSED(ref);
 }
 
 void QuickFutureUnitTests::test_QFVariantWrapper()
