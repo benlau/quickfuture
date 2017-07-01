@@ -201,13 +201,13 @@ public:
                     printException(ret);
                 }
             }
-            if (watcher != 0) {
-                delete watcher;
-            }
         };
-
         watcher = new QFutureWatcher<T>();
         QObject::connect(watcher, &QFutureWatcherBase::progressValueChanged, listener);
+        QObject::connect(watcher, &QFutureWatcherBase::finished, [=](){
+            watcher->disconnect();
+            watcher->deleteLater();
+        });
         watcher->setFuture(future);
     }
 

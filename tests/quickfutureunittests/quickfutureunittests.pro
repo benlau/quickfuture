@@ -31,7 +31,8 @@ DISTFILES +=     qpm.json     \
     qmltests/tst_Callback.qml \
     qmltests/tst_Promise.qml \
     qmltests/tst_Sync.qml \
-    qmltests/CustomTestCase.qml
+    qmltests/CustomTestCase.qml \
+    ../../qpm.json
 
 HEADERS +=     \
     quickfutureunittests.h \

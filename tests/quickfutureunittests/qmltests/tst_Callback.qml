@@ -106,10 +106,11 @@ CustomTestCase {
 
     function test_progressValueChanged() {
         var future, result;
-        future = Actor.delayMapped(16);
+        var count = 50;
+        future = Actor.delayMapped(count);
         compare(Future.progressValue(future), 0);
         compare(Future.progressMinimum(future), 0);
-        compare(Future.progressMaximum(future), 16);
+        compare(Future.progressMaximum(future), count);
         var list = [];
 
         Future.onProgressValueChanged(future, function(value) {
@@ -118,14 +119,14 @@ CustomTestCase {
 
         waitUntil(function() {
             return Future.isFinished(future);
-        }, 1000);
+        }, 7000);
 
         compare(Future.isFinished(future), true);
 
-        compare(Future.progressValue(future), 16);
+        compare(Future.progressValue(future), count);
         compare(Future.progressMinimum(future), 0);
-        compare(Future.progressMaximum(future), 16);
-        compare(list.length > 1, true);
+        compare(Future.progressMaximum(future), count);
+        compare(list.length > 3, true);
     }
 
 
