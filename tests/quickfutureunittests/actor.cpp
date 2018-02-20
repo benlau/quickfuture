@@ -27,7 +27,7 @@ QFuture<QString> Actor::read(const QString &fileName)
         }
 
         return file.readAll();
-                             });
+    });
 }
 
 QFuture<int> Actor::delayMapped(int count)

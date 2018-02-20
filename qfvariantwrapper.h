@@ -59,6 +59,42 @@ namespace QuickFuture {
         return QVariant();
     }
 
+    template <typename T>
+    inline QVariant toVariantList(const QFuture<T> &future, Converter converter) {
+        if (future.resultCount() == 0) {
+            qWarning() << "Future.results(): The result is not ready!";
+            return QVariant();
+        }
+
+        QVariantList ret;
+
+        QList<T> results = future.results();
+
+        if (converter != nullptr) {
+
+            for (int i = 0 ; i < results.size() ;i++) {
+                T t = future.resultAt(i);
+                ret.append(converter(&t));
+            }
+
+        } else {
+
+            for (int i = 0 ; i < results.size() ;i++) {
+                ret.append(QVariant::fromValue<T>(future.resultAt(i)));
+            }
+
+        }
+
+        return ret;
+    }
+
+    template <>
+    inline QVariant toVariantList<void>(const QFuture<void> &future, Converter converter) {
+        Q_UNUSED(converter);
+        Q_UNUSED(future);
+        return QVariant();
+    }
+
     inline void printException(QJSValue value) {
         QString message = QString("%1:%2: %3: %4")
                           .arg(value.property("fileName").toString())
@@ -88,6 +124,8 @@ public:
     virtual int progressMaximum(const QVariant& v) = 0;
 
     virtual QVariant result(const QVariant& v) = 0;
+
+    virtual QVariant results(const QVariant& v) = 0;
 
     virtual void onFinished(QPointer<QQmlEngine> engine, const QVariant& v, const QJSValue& func) = 0;
 
@@ -181,6 +219,11 @@ public:
     QVariant result(const QVariant &future) {
         QFuture<T> f = future.value<QFuture<T>>();
         return QuickFuture::toVariant(f, converter);
+    }
+
+    QVariant results(const QVariant &future) {
+        QFuture<T> f = future.value<QFuture<T>>();
+        return QuickFuture::toVariantList(f, converter);
     }
 
     void onProgressValueChanged(QPointer<QQmlEngine> engine, const QVariant &v, const QJSValue &func) {

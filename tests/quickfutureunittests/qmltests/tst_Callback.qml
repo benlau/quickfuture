@@ -104,6 +104,20 @@ CustomTestCase {
         compare(result.message, "reply");
     }
 
+    function test_results() {
+        var future, result;
+        var count = 50;
+        future = Actor.delayMapped(3);
+
+        waitUntil(function() {
+            return Future.isFinished(future);
+        }, 7000);
+
+        var results = Future.results(future);
+
+        compare(results, [0,1,4]);
+    }
+
     function test_progressValueChanged() {
         var future, result;
         var count = 50;

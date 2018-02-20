@@ -178,6 +178,18 @@ QVariant Future::result(const QVariant &future)
     return wrapper->result(future);
 }
 
+QVariant Future::results(const QVariant &future)
+{
+    QVariant res;
+    if (!m_wrappers.contains(typeId(future))) {
+        qWarning() << QString("Future: Can not handle input data type: %1").arg(QMetaType::typeName(future.type()));
+        return res;
+    }
+
+    VariantWrapperBase* wrapper = m_wrappers[typeId(future)];
+    return wrapper->results(future);
+}
+
 QJSValue Future::promise(QJSValue future)
 {
     QJSValue create = promiseCreator.property("create");

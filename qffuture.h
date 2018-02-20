@@ -56,6 +56,8 @@ public slots:
 
     QVariant result(const QVariant& future);
 
+    QVariant results(const QVariant& future);
+
     QJSValue promise(QJSValue future);
 
     void sync(const QVariant& future, const QString& propertyInFuture, QObject* target, const QString& propertyInTarget = QString());
