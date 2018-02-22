@@ -55,7 +55,7 @@ The same rule applies in Quick Future too.
 Common types are pre-registered already.
 For your own custom type, you can register it by:
 
-```
+```c++
 #include <QuickFuture>
 Q_DECLARE_METATYPE(CustomType)
 Q_DECLARE_METATYPE(QFuture<CustomType>)
@@ -66,11 +66,12 @@ int main(int argc, char *argv[])
 {
 
 ...
-      // An optional
-      QVariantMap res;
-      res["field"] = value.field;
-      // ....
-      return res;
+    QuickFuture::registerType<Actor::Reply>([](CustomType value) -> QVariant {
+        // Optional converter function.
+        QVariantMap res;
+        res["field"] = value.field;
+        // ....
+        return res;
    });
 ...
 
