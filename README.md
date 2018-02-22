@@ -65,15 +65,15 @@ Q_DECLARE_METATYPE(QFuture<CustomType>)
 int main(int argc, char *argv[])
 {
 
-...
-    QuickFuture::registerType<Actor::Reply>([](CustomType value) -> QVariant {
+//...
+    QuickFuture::registerType<CustomType>([](CustomType value) -> QVariant {
         // Optional converter function.
         QVariantMap res;
         res["field"] = value.field;
         // ....
         return res;
    });
-...
+//...
 
 }
 ```
