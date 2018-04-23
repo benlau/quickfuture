@@ -197,7 +197,7 @@ QJSValue Future::promise(QJSValue future)
     args << future;
 
     QJSValue result = create.call(args);
-    if (result.isError()) {
+    if (result.isError() || result.isUndefined()) {
         qWarning() << "Future.promise: QuickPromise is not installed or setup properly";
         result = QJSValue();
     }
