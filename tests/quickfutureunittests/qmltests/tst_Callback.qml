@@ -74,6 +74,25 @@ CustomTestCase {
         compare(called, true);
     }
 
+    function test_onCanceledInt() {
+        var future = Actor.canceledInt();
+        var called = false;
+
+        compare(Future.isFinished(future), true);
+        compare(Future.isRunning(future), false);
+        compare(Future.isCanceled(future), true);
+
+        Future.onCanceled(future, function() {
+            called = true;
+        });
+
+        waitUntil(function() {
+            return called;
+        }, 1000);
+
+        compare(called, true);
+    }
+
     function test_result() {
         var future, result;
         future = Actor.delayReturnBool(true);
