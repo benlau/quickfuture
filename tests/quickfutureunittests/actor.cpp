@@ -62,6 +62,15 @@ QFuture<void> Actor::canceled()
     return defer.future();
 }
 
+QFuture<int> Actor::canceledInt()
+{
+    auto defer = deferred<int>();
+
+    defer.cancel();
+
+    return defer.future();
+}
+
 QFuture<bool> Actor::delayReturnBool(bool value)
 {
     auto defer = deferred<bool>();

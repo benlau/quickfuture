@@ -31,6 +31,8 @@ public slots:
 
     QFuture<void> canceled();
 
+    QFuture<int> canceledInt();
+
     QFuture<bool> delayReturnBool(bool value);
 
     QFuture<QSize> delayReturnQSize(QSize value);

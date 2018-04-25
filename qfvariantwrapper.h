@@ -16,7 +16,9 @@ namespace QuickFuture {
 
     template <typename T>
     inline QJSValueList valueList(const QPointer<QQmlEngine>& engine, const QFuture<T>& future) {
-        QJSValue value = engine->toScriptValue<T>(future.result());
+        QJSValue value;
+        if (future.resultCount() > 0)
+            value = engine->toScriptValue<T>(future.result());
         return QJSValueList() << value;
     }
 
