@@ -141,7 +141,7 @@ The callback will be invoked when the watched future finishes.
 
 **Future.promise(future)**
 
-Create a promise object which will be resolved when the future has finished. It must have QuickPromise installed and setup properly before using this function.
+Create a promise object which will be resolved when the future has finished or will be rejected when the future is canceled. It must have QuickPromise installed and setup properly before using this function.
 
 **Future.result(future)**
 
