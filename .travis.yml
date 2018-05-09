@@ -13,6 +13,7 @@ script:
     - source qtci/path.env
     - qt-5.7
     - source qt-5.7.env
+    - (cd tests/quickfutureunittests; qpm install)
     - mkdir build
     - cd build
     - qmake ../quickfuture.pro

@@ -37,16 +37,13 @@ HEADERS +=     \
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000
 
 win32 {
-    message($${OUT_PWD})
-
-    CONFIG(release) {
-        LIBS += -L${OUT_PWD}../../../src/Release
+    debug {
+        LIBS += -L$${OUT_PWD}/../../src/debug
     } else {
-        LIBS += -L${OUT_PWD}../../../src/Debug
+        LIBS += -L$${OUT_PWD}/../../src/release
     }
-
 } else {
-    LIBS += -L${OUT_PWD}../../src
+    LIBS += -L$${OUT_PWD}../../src
 }
 
 LIBS += -lquickfuture
