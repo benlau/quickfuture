@@ -21,7 +21,9 @@ build_script:
   - cd tests\quickfutureunittests
   - qpm install
   - cd ..\..
-  - qmake quickfuture.pro
+  - mkdir build
+  - cd build
+  - qmake -d ..\quickfuture.pro
   - nmake
   - tree /F /A
   - tests\quickfutureunittests\release\quickfutureunittests
