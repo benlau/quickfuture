@@ -15,5 +15,7 @@ script:
     - source qt-5.7.env
     - mkdir build
     - cd build
-    - run-unittests ../tests/quickfutureunittests/quickfutureunittests.pro
+    - qmake ../quickfuture.pro
+    - make
+    - ./tests/quickfutureunittests/quickfutureunittests
 

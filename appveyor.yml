@@ -20,8 +20,8 @@ build_script:
   - dir %GOPATH%\bin
   - cd tests\quickfutureunittests
   - qpm install
-  - qmake quickfutureunittests.pro
+  - cd ..\..
+  - qmake quickfuture.pro
   - nmake
-  - dir /w
-  - dir release /w
-  - release\quickfutureunittests
+  - tree /F /A
+  - tests\quickfutureunittests\release\quickfutureunittests

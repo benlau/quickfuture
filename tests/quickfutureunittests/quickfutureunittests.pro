@@ -1,9 +1,3 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2016-02-25T18:56:34
-#
-#-------------------------------------------------
-
 QT       += testlib qml concurrent
 CONFIG += c++11
 
@@ -13,6 +7,7 @@ CONFIG   -= app_bundle
 
 TEMPLATE = app
 ROOT_DIR = $$PWD/../..
+INCLUDEPATH += $$PWD/../..
 
 SOURCES +=     main.cpp     \
     quickfutureunittests.cpp \
@@ -21,7 +16,6 @@ SOURCES +=     main.cpp     \
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 include(vendor/vendor.pri)
-include($$ROOT_DIR/quickfuture.pri)
 
 DEFINES += QUICK_TEST_SOURCE_DIR=\\\"$$PWD\\\"
 
@@ -32,10 +26,27 @@ DISTFILES +=     qpm.json     \
     qmltests/tst_Promise.qml \
     qmltests/tst_Sync.qml \
     qmltests/CustomTestCase.qml \
-    ../../qpm.json
+    ../../qpm.json \
+    ../../.travis.yml \
+    ../../appveyor.yml
 
 HEADERS +=     \
     quickfutureunittests.h \
     actor.h
 
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000
+
+win32 {
+    message($${OUT_PWD})
+
+    CONFIG(release) {
+        LIBS += -L${OUT_PWD}../../../src/Release
+    } else {
+        LIBS += -L${OUT_PWD}../../../src/Debug
+    }
+
+} else {
+    LIBS += -L${OUT_PWD}../../src
+}
+
+LIBS += -lquickfuture

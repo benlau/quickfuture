@@ -1,5 +1,6 @@
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
+QT += qml concurrent
 
 SOURCES += \
     $$PWD/qffuture.cpp
