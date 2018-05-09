@@ -37,11 +37,13 @@ HEADERS +=     \
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000
 
 win32 {
-    debug {
+
+    CONFIG(debug, debug|release) {
         QMAKE_LIBDIR += $${OUT_PWD}/../../src/debug
     } else {
         QMAKE_LIBDIR += $${OUT_PWD}/../../src/release
     }
+
 } else {
     LIBS += -L$${OUT_PWD}/../../src
 }
