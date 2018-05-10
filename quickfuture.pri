@@ -1,12 +1,6 @@
-INCLUDEPATH += $$PWD
-DEPENDPATH += $$PWD
-QT += qml concurrent
+INCLUDEPATH += $$PWD/src
+DEPENDPATH += $$PWD/src
 
-SOURCES += \
-    $$PWD/qffuture.cpp
+QT += qml
 
-HEADERS += \
-    $$PWD/qfvariantwrapper.h \
-    $$PWD/qffuture.h \
-    $$PWD/QuickFuture \
-    $$PWD/quickfuture.h
+include(src/src.pri)

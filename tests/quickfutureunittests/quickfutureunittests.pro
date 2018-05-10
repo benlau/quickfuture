@@ -7,7 +7,7 @@ CONFIG   -= app_bundle
 
 TEMPLATE = app
 ROOT_DIR = $$PWD/../..
-INCLUDEPATH += $$PWD/../..
+INCLUDEPATH += $$PWD/../../src
 
 SOURCES +=     main.cpp     \
     quickfutureunittests.cpp \
