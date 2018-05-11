@@ -28,7 +28,8 @@ DISTFILES +=     qpm.json     \
     qmltests/CustomTestCase.qml \
     ../../qpm.json \
     ../../.travis.yml \
-    ../../appveyor.yml
+    ../../appveyor.yml \
+    ../../conanfile.py
 
 HEADERS +=     \
     quickfutureunittests.h \

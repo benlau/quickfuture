@@ -10,6 +10,7 @@ isEmpty(INSTALL_ROOT) {
 }
 
 target.path = $${INSTALL_ROOT}
+INSTALLS += target
 
 include(../quickfuture.pri)
 
