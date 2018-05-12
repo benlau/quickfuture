@@ -14,7 +14,7 @@ class QuickFutureConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     default_options = "shared=False"
     exports = "qconanextra.json"
-    exports_sources = "*.pro", "*.pri", "*.js", "*.h" , "*.cpp", "*.qml", "!tests/*", "*/qmldir", "*.qrc"
+    exports_sources = "*.pro", "*.pri", "*.js", "*.h" , "*.cpp", "*.qml", "!tests/*", "*/qmldir", "*.qrc", "src/QuickFuture"
 
     def package_id(self):
         version_info = subprocess.check_output(['qmake', '--version'])
@@ -54,4 +54,5 @@ class QuickFutureConan(ConanFile):
     def package_info(self):
         if not self.options.shared:
             self.cpp_info.libs = ["quickfuture"]
-            self.cpp_info.libdirs = [""]
+            self.cpp_info.libdirs = ["lib"]
+            self.cpp_info.includedirs = ["include"]
