@@ -23,7 +23,7 @@ equals(PLUGIN, "true") {
 
     target.path = $${INSTALL_ROOT}/QuickFuture
 
-    QML.files = $$PWD/qmldir
+    QML.files = $$PWD/qmldir $$PWD/quickfuture.qmltypes
     QML.path = $${INSTALL_ROOT}/QuickFuture
 
     INSTALLS += QML
@@ -46,3 +46,7 @@ equals(PLUGIN, "true") {
 equals(SHARED, "false") {
     CONFIG += staticlib
 }
+
+DISTFILES += \
+    quickfuture.qmltypes \
+    qmldir

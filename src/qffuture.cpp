@@ -250,7 +250,6 @@ static void init() {
         }
     });
 
-    qmlRegisterSingletonType<Future>("Future", 1, 0, "Future", provider);
     qmlRegisterSingletonType<Future>("QuickFuture", 1, 0, "Future", provider);
 
     Future::registerType<QString>();
@@ -264,7 +263,9 @@ static void init() {
     Future::registerType<QSize>();
 }
 
+#ifndef QUICK_FUTURE_BUILD_PLUGIN
 Q_COREAPP_STARTUP_FUNCTION(init)
+#endif
 } // End of namespace
 
 #ifdef QUICK_FUTURE_BUILD_PLUGIN
