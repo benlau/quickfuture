@@ -1,7 +1,9 @@
 #include <QGuiApplication>
 #include <QtQml>
 #include <QQmlComponent>
+
 #include "qffuture.h"
+#include "quickfuture.h"
 
 Q_DECLARE_METATYPE(QFuture<QString>)
 Q_DECLARE_METATYPE(QFuture<int>)
@@ -231,6 +233,12 @@ static QObject *provider(QQmlEngine *engine, QJSEngine *scriptEngine) {
 }
 
 static void init() {
+    bool called = false;
+    if (called) {
+        return;
+    }
+    called = true;
+
     QCoreApplication* app = QCoreApplication::instance();
     QObject* tmp = new QObject(app);
 
@@ -257,5 +265,11 @@ static void init() {
 }
 
 Q_COREAPP_STARTUP_FUNCTION(init)
-
 } // End of namespace
+
+#ifdef QUICK_FUTURE_BUILD_PLUGIN
+void QuickFutureQmlPlugin::registerTypes(const char *uri) {
+    Q_UNUSED(uri);
+    QuickFuture::init();
+}
+#endif

@@ -10,9 +10,9 @@ class QuickFutureConan(ConanFile):
     license = "Apache 2.0"
     url = "https://github.com/benlau/quickfuture"
     description = "A QML wrapper of QFuture"
-    options = {"shared": [True, False]}
+    options = {"shared": [True, False], "plugin": [True, False]}
     settings = "os", "compiler", "build_type", "arch"
-    default_options = "shared=False"
+    default_options = "shared=False", "plugin=False"
     exports = "qconanextra.json"
     exports_sources = "*.pro", "*.pri", "*.js", "*.h" , "*.cpp", "*.qml", "!tests/*", "*/qmldir", "*.qrc", "src/QuickFuture"
 
@@ -34,9 +34,15 @@ class QuickFutureConan(ConanFile):
         args = ["%s/src/src.pro" % self.source_folder,
                 "INSTALL_ROOT=%s" % self.package_folder]
 
+        if self.options.plugin:
+            self.options.shared = True
+            args.append("PLUGIN=true")
+
         if self.options.shared:
             args.append("SHARED=true")
-            
+
+        args.append("CONFIG+=release")
+
         self.qmake(args)
         self.make()
 

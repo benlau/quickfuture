@@ -22,4 +22,6 @@ script:
     - ./tests/quickfutureunittests/quickfutureunittests
     - cd ..
     - conan create . conan/testing
+    - conan install quickfuture/1.0.6@conan/testing --build quickfuture -o quickfuture:shared=True
+    - conan install quickfuture/1.0.6@conan/testing --build quickfuture -o quickfuture:plugin=True
 
