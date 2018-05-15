@@ -270,7 +270,7 @@ Q_COREAPP_STARTUP_FUNCTION(init)
 
 #ifdef QUICK_FUTURE_BUILD_PLUGIN
 void QuickFutureQmlPlugin::registerTypes(const char *uri) {
-    Q_UNUSED(uri);
+    Q_ASSERT(QString("QuickFuture") == uri);
     QuickFuture::init();
 }
 #endif

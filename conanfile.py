@@ -50,8 +50,8 @@ class QuickFutureConan(ConanFile):
         self.make(["install"])
 
         qconanextra_json = {}
-        if not self.options.shared:
-            qconanextra_json["plugin"] = "quickfuture"
+        qconanextra_json["plugin"] = "QuickFutureQmlPlugin"
+        qconanextra_json["import_static_qml_plugin"] = "QuickFutureQmlPlugin:QuickFuture"
 
         with open(os.path.join(self.package_folder, "qconanextra.json"), "w") as file:
             file.write(json.dumps(qconanextra_json))

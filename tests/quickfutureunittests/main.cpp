@@ -7,6 +7,7 @@
 #include <XBacktrace.h>
 #include <QtQuickTest/quicktest.h>
 #include "quickfutureunittests.h"
+#include <QQmlExtensionPlugin>
 
 Q_DECLARE_METATYPE(QFuture<QSize>)
 
@@ -19,6 +20,16 @@ int main(int argc, char *argv[])
     XBacktrace::enableBacktraceLogOnUnhandledException();
 
     QGuiApplication app(argc, argv);
+    Q_IMPORT_PLUGIN(QuickFutureQmlPlugin);
+
+    foreach(QObject* plugin, QPluginLoader::staticInstances()) {
+        if (plugin->metaObject()->className() == QString("QuickFutureQmlPlugin")) {
+            QQmlExtensionPlugin* extend = qobject_cast<QQmlExtensionPlugin*>(plugin);
+            if (extend) {
+                extend->registerTypes("QuickFuture");
+            }
+        }
+    }
 
     TestRunner runner;
     runner.addImportPath("qrc:///");

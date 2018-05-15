@@ -1,5 +1,6 @@
 TARGET = quickfuture
 TEMPLATE = lib
+CONFIG += plugin
 
 isEmpty(SHARED): SHARED = "false"
 isEmpty(PLUGIN): PLUGIN = "false"
@@ -13,12 +14,11 @@ isEmpty(INSTALL_ROOT) {
 include(../quickfuture.pri)
 
 INSTALLS += target
+DEFINES += QUICK_FUTURE_BUILD_PLUGIN
 
 equals(PLUGIN, "true") {
     SHARED = "true"
     TARGET = quickfutureqmlplugin
-    CONFIG         += plugin
-    DEFINES += QUICK_FUTURE_BUILD_PLUGIN
     isEmpty(INSTALL_ROOT): INSTALL_ROOT=$$[QT_INSTALL_QML]
 
     target.path = $${INSTALL_ROOT}/QuickFuture
