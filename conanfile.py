@@ -52,13 +52,14 @@ class QuickFutureConan(ConanFile):
         qconanextra_json = {}
         qconanextra_json["plugin"] = "QuickFutureQmlPlugin"
         qconanextra_json["import_static_qml_plugin"] = "QuickFutureQmlPlugin:QuickFuture"
+        qconanextra_json["qml_import_path"] = ""
 
         with open(os.path.join(self.package_folder, "qconanextra.json"), "w") as file:
             file.write(json.dumps(qconanextra_json))
             file.close()
 
     def package_info(self):
-        if not self.options.shared:
+        if not self.options.plugin:
             self.cpp_info.libs = ["quickfuture"]
             self.cpp_info.libdirs = ["lib"]
             self.cpp_info.includedirs = ["include"]

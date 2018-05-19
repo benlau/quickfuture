@@ -36,3 +36,5 @@ Makefile*
 # QtCtreator CMake
 CMakeLists.txt.user
 *.qmlc
+conaninfo.txt
+conanbuildinfo.txt

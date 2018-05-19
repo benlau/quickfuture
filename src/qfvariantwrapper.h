@@ -174,7 +174,6 @@ public:
             return; \
         } \
         QFuture<T> future = v.value<QFuture<T>>(); \
-        QFutureWatcher<T> *watcher = 0; \
         auto listener = [=]() { \
             if (!engine.isNull()) { \
                 QJSValue callback = func; \
@@ -183,15 +182,15 @@ public:
                     printException(ret); \
                 } \
             } \
-            if (watcher != 0) { \
-                delete watcher; \
-            } \
         };\
         if (future.checker()) { \
             QuickFuture::nextTick(listener); \
         } else { \
-            watcher = new QFutureWatcher<T>(); \
-            QObject::connect(watcher, &QFutureWatcherBase::finished, listener); \
+            QFutureWatcher<T> *watcher = new QFutureWatcher<T>(); \
+            QObject::connect(watcher, &QFutureWatcherBase::finished, [=]() { \
+                listener(); \
+                delete watcher; \
+            }); \
             watcher->setFuture(future); \
         } \
     }
