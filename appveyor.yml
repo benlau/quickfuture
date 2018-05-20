@@ -20,6 +20,7 @@ build_script:
   - set GOPATH=c:\gopath
   - set QTDIR=C:\Qt\5.8\msvc2015_64
   - set PATH=%PATH%;%QTDIR%\bin;C:\MinGW\bin;%GOPATH%\bin;
+  - tree /F /A %QTDIR%
   - go get qpm.io/qpm
   - go install qpm.io/qpm
   - dir %GOPATH%\bin
@@ -30,7 +31,6 @@ build_script:
   - cd build
   - qmake -d ..\quickfuture.pro
   - nmake
-  - tree /F /A
   - tests\quickfutureunittests\release\quickfutureunittests
   - cd ..
   - conan create . conan/testing

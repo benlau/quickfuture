@@ -142,24 +142,26 @@ int Future::progressMaximum(const QVariant &future)
     return wrapper->progressMaximum(future);
 }
 
-void Future::onFinished(const QVariant &future, QJSValue func)
+void Future::onFinished(const QVariant &future, QJSValue func, QJSValue owner)
 {
+    Q_UNUSED(owner);
+
     if (!m_wrappers.contains(typeId(future))) {
         qWarning() << QString("Future: Can not handle input data type: %1").arg(QMetaType::typeName(future.type()));
         return;
     }
     VariantWrapperBase* wrapper = m_wrappers[typeId(future)];
-    wrapper->onFinished(m_engine, future, func);
+    wrapper->onFinished(m_engine, future, func, owner.toQObject());
 }
 
-void Future::onCanceled(const QVariant &future, QJSValue func)
+void Future::onCanceled(const QVariant &future, QJSValue func, QJSValue owner)
 {
     if (!m_wrappers.contains(typeId(future))) {
         qWarning() << QString("Future: Can not handle input data type: %1").arg(QMetaType::typeName(future.type()));
         return;
     }
     VariantWrapperBase* wrapper = m_wrappers[typeId(future)];
-    wrapper->onCanceled(m_engine, future, func);
+    wrapper->onCanceled(m_engine, future, func, owner.toQObject());
 }
 
 void Future::onProgressValueChanged(const QVariant &future, QJSValue func)

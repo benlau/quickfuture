@@ -139,6 +139,8 @@ The callback will be invoked when the watched future finishes.
 
 **Future.onCanceled(future, callback)**
 
+**Future.onProgressValueChanged(future, callback)**
+
 **Future.promise(future)**
 
 Create a promise object which will be resolved when the future has finished or will be rejected when the future is canceled. It must have QuickPromise installed and setup properly before using this function.

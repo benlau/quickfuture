@@ -129,9 +129,9 @@ public:
 
     virtual QVariant results(const QVariant& v) = 0;
 
-    virtual void onFinished(QPointer<QQmlEngine> engine, const QVariant& v, const QJSValue& func) = 0;
+    virtual void onFinished(QPointer<QQmlEngine> engine, const QVariant& v, const QJSValue& func, QObject* owner) = 0;
 
-    virtual void onCanceled(QPointer<QQmlEngine> engine, const QVariant& v, const QJSValue& func) = 0;
+    virtual void onCanceled(QPointer<QQmlEngine> engine, const QVariant& v, const QJSValue& func, QObject* owner) = 0;
 
     virtual void onProgressValueChanged(QPointer<QQmlEngine> engine, const QVariant& v, const QJSValue& func) = 0;
 
@@ -168,7 +168,8 @@ public:
     }
 
 #define QF_WRAPPER_CONNECT(method, checker) \
-        virtual void method(QPointer<QQmlEngine> engine, const QVariant& v, const QJSValue& func) { \
+        virtual void method(QPointer<QQmlEngine> engine, const QVariant& v, const QJSValue& func, QObject* owner) { \
+        QPointer<QObject> context = owner; \
         if (!func.isCallable()) { \
             qWarning() << "Future." #method ": Callback is not callable"; \
             return; \
@@ -184,13 +185,19 @@ public:
             } \
         };\
         if (future.checker()) { \
-            QuickFuture::nextTick(listener); \
+            QuickFuture::nextTick([=]() { \
+                if (owner && !context.isNull()) { \
+                    return;\
+                } \
+                listener(); \
+            }); \
         } else { \
             QFutureWatcher<T> *watcher = new QFutureWatcher<T>(); \
             QObject::connect(watcher, &QFutureWatcherBase::finished, [=]() { \
                 listener(); \
                 delete watcher; \
             }); \
+            watcher->setParent(owner); \
             watcher->setFuture(future); \
         } \
     }

@@ -8,6 +8,12 @@ CustomTestCase {
 
     name: "CallbackTests";
 
+    Component {
+        id: itemCreator
+        Item {
+        }
+    }
+
     function test_onFinished() {
         var called = false;
         var result;
@@ -40,6 +46,24 @@ CustomTestCase {
         compare(called, true);
         compare(result, undefined);
         compare(Future.isRunning(future), false);
+    }
+
+    function test_onFinished_owner() {
+        var future = Actor.delayReturnBool(false);
+        var called = false;
+        var result;
+        var item = itemCreator.createObject();
+
+        Future.onFinished(future, function(value) {
+            result = value;
+            called = true;
+        }, item);
+
+        item.destroy();
+        wait(300);
+
+        compare(called, false);
+        compare(result, undefined);
     }
 
     function test_alreadyFinished() {

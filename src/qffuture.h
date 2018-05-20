@@ -48,9 +48,9 @@ public slots:
 
     int progressMaximum(const QVariant& future);
 
-    void onFinished(const QVariant& future, QJSValue func);
+    void onFinished(const QVariant& future, QJSValue func, QJSValue owner = QJSValue());
 
-    void onCanceled(const QVariant& future, QJSValue func);
+    void onCanceled(const QVariant& future, QJSValue func, QJSValue owner = QJSValue());
 
     void onProgressValueChanged(const QVariant& future, QJSValue func);
 
