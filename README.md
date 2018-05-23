@@ -133,11 +133,17 @@ Returns true if the asynchronous computation represented by this future has fini
 
 **Future.isCanceled(future)**
 
-**Future.onFinished(future, callback)**
+**Future.onFinished(future, callback, owner)**
 
-The callback will be invoked when the watched future finishes.
+Listen the future's onFinished signal, run the callback when it is invoked.
+
+The owner argument is an optional parameter. If it is set, the callback will be disconnected automatically when the owner is destructed. It is added since v1.0.7.
 
 **Future.onCanceled(future, callback)**
+
+Listen the future's onCanceled signal, run the callback when it is invoked.
+
+The owner argument is an optional parameter. If it is set, the callback will be disconnected automatically when the owner is destructed. It is added since v1.0.7.
 
 **Future.onProgressValueChanged(future, callback)**
 
