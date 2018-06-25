@@ -2,6 +2,6 @@ TEMPLATE = subdirs
 
 CONFIG += ordered
 
-SUBDIRS += src tests/quickfutureunittests
+SUBDIRS += buildlib tests/quickfutureunittests
 
-quickfutureunittests.depends = src
+quickfutureunittests.depends = buildlib

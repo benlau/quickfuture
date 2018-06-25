@@ -40,13 +40,13 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000
 win32 {
 
     CONFIG(debug, debug|release) {
-        QMAKE_LIBDIR += $${OUT_PWD}/../../src/debug
+        QMAKE_LIBDIR += $${OUT_PWD}/../../buildlib/debug
     } else {
-        QMAKE_LIBDIR += $${OUT_PWD}/../../src/release
+        QMAKE_LIBDIR += $${OUT_PWD}/../../buildlib/release
     }
 
 } else {
-    LIBS += -L$${OUT_PWD}/../../src
+    LIBS += -L$${OUT_PWD}/../../buildlib
 }
 
 LIBS += -lquickfuture

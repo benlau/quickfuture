@@ -31,7 +31,7 @@ class QuickFutureConan(ConanFile):
         self.run(cmd)
 
     def build(self):
-        args = ["%s/src/src.pro" % self.source_folder,
+        args = ["%s/buildlib/buildlib.pro" % self.source_folder,
                 "INSTALL_ROOT=%s" % self.package_folder]
 
         if self.options.plugin:
