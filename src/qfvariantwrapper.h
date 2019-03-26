@@ -167,7 +167,7 @@ public:
         return; \
     }
 
-#define QF_WRAPPER_CONNECT(method, checker) \
+#define QF_WRAPPER_CONNECT(method, checker, watcherSignal) \
         virtual void method(QPointer<QQmlEngine> engine, const QVariant& v, const QJSValue& func, QObject* owner) { \
         QPointer<QObject> context = owner; \
         if (!func.isCallable()) { \
@@ -186,14 +186,14 @@ public:
         };\
         if (future.checker()) { \
             QuickFuture::nextTick([=]() { \
-                if (owner && !context.isNull()) { \
+                if (owner && context.isNull()) { \
                     return;\
                 } \
                 listener(); \
             }); \
         } else { \
             QFutureWatcher<T> *watcher = new QFutureWatcher<T>(); \
-            QObject::connect(watcher, &QFutureWatcherBase::finished, [=]() { \
+            QObject::connect(watcher, &QFutureWatcherBase::watcherSignal, [=]() { \
                 listener(); \
                 delete watcher; \
             }); \
@@ -220,9 +220,9 @@ public:
 
     QF_WRAPPER_DECL_READ(int, progressMaximum)
 
-    QF_WRAPPER_CONNECT(onFinished, isFinished)
+    QF_WRAPPER_CONNECT(onFinished, isFinished, finished)
 
-    QF_WRAPPER_CONNECT(onCanceled, isCanceled)
+    QF_WRAPPER_CONNECT(onCanceled, isCanceled, canceled)
 
     QVariant result(const QVariant &future) {
         QFuture<T> f = future.value<QFuture<T>>();
