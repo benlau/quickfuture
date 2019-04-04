@@ -79,6 +79,28 @@ CustomTestCase {
         compare(called, true);
     }
 
+    function test_alreadyFinished_should_not_trigger_onCanceled() {
+        var onFinishedCalled = false;
+        var onCanceledCalled = false;
+
+        var future = Actor.alreadyFinished();
+
+        Future.onFinished(future, function(value) {
+            onFinishedCalled = true;
+        });
+
+        Future.onCanceled(future, function(value) {
+            onCanceledCalled = true;
+        });
+
+        compare(onFinishedCalled, false);
+        wait(10);
+        compare(onFinishedCalled, true);
+
+        expectFail("", "#6");
+        compare(onCanceledCalled, false);
+    }
+
     function test_onCanceled() {
         var future = Actor.canceled();
         var called = false;
