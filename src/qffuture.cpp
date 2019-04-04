@@ -157,7 +157,7 @@ void Future::onFinished(const QVariant &future, QJSValue func, QJSValue owner)
 void Future::onCanceled(const QVariant &future, QJSValue func, QJSValue owner)
 {
     if (!m_wrappers.contains(typeId(future))) {
-        qWarning() << QString("Future: Can not handle input data type: %1").arg(QMetaType::typeName(future.type()));
+        qWarning() << QString("Future: Can not handle input data type: %1").arg(QMetaType::typeName(static_cast<int>(future.type())));
         return;
     }
     VariantWrapperBase* wrapper = m_wrappers[typeId(future)];

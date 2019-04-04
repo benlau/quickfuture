@@ -20,7 +20,8 @@ build_script:
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
   - set GOPATH=c:\gopath
   - set QTDIR=C:\Qt\5.9.7\msvc2017_64
-  - set PATH=%PATH%;%QTDIR%\bin;C:\MinGW\bin;%GOPATH%\bin;  - go get qpm.io/qpm
+  - set PATH=%PATH%;%QTDIR%\bin;C:\MinGW\bin;%GOPATH%\bin;
+  - go get qpm.io/qpm
   - go install qpm.io/qpm
   - dir %GOPATH%\bin
   - cd tests\quickfutureunittests

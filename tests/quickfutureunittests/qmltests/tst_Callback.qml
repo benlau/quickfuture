@@ -85,6 +85,10 @@ CustomTestCase {
 
         var future = Actor.alreadyFinished();
 
+        compare(Future.isFinished(future), true);
+
+        compare(Future.isCanceled(future), false);
+
         Future.onFinished(future, function(value) {
             onFinishedCalled = true;
         });
@@ -97,7 +101,6 @@ CustomTestCase {
         wait(10);
         compare(onFinishedCalled, true);
 
-        expectFail("", "#6");
         compare(onCanceledCalled, false);
     }
 

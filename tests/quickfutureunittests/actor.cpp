@@ -50,7 +50,10 @@ QFuture<void> Actor::dummy()
 
 QFuture<void> Actor::alreadyFinished()
 {
-    return QFuture<void>();
+    auto defer = deferred<void>();
+    defer.complete();
+
+    return defer.future();
 }
 
 QFuture<void> Actor::canceled()

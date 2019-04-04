@@ -8,6 +8,7 @@
 #include <QPointer>
 #include <QJSEngine>
 #include <QCoreApplication>
+#include <QQmlEngine>
 #include <functional>
 
 namespace QuickFuture {
