@@ -9,7 +9,7 @@ import QtQuick.tooling 1.2
 Module {
     dependencies: ["QtQuick 2.8"]
     Component {
-        name: "QuickFuture::Future"
+        name: "Future"
         prototype: "QObject"
         exports: ["QuickFuture/Future 1.0"]
         isCreatable: false
